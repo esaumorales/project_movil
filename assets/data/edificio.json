@@ -1,0 +1,13 @@
+[
+    {
+      "id_edificio": 1,
+      "referencia_edificio": "Edificio A",
+      "direccion": "Av. Principal 456",
+      "n_pisos": 5,
+      "reglas": "No mascotas",
+      "url_ubicacion": "https://maps.example.com/edificioA",
+      "PARTNER_id_partner": 1,
+      "ZONA_id_zona": 1
+    }
+  ]
+  

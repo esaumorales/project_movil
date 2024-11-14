@@ -1,0 +1,21 @@
+[
+    {
+      "id_cuarto": 1,
+      "descripcion": "Alvaro",
+      "precio": 500.0,
+      "disponibilidad": "S",
+      "n_cuarto": 1,
+      "EDIFICIO_id_edificio": 1,
+      "PERIODO_id_periodo": 1
+    },
+    {
+      "id_cuarto": 2,
+      "descripcion": "Votame tu ga",
+      "precio": 500.0,
+      "disponibilidad": "N",
+      "n_cuarto": 2,
+      "EDIFICIO_id_edificio": 2,
+      "PERIODO_id_periodo": 2
+    }
+  ]
+  

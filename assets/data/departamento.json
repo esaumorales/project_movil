@@ -1,0 +1,12 @@
+[
+    {
+      "id_departamento": 1,
+      "descripcion": "Departamento 101",
+      "precio": 1500.0,
+      "disponibilidad": "S",
+      "PERIODO_id_periodo": 1,
+      "EDIFICIO_id_edificio": 1,
+      "TIPO_id_tipo": 1
+    }
+  ]
+  

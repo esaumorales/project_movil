@@ -1,0 +1,12 @@
+[
+    {
+      "id_partner": 1,
+      "nombre_empresa": "Empresa Ejemplo",
+      "ruc": "123456789",
+      "direccion_empresa": "Calle Falsa 123",
+      "telefono_empresa": "987654321",
+      "email_empresa": "contacto@empresa.com",
+      "PERSONA_id_persona": 1
+    }
+  ]
+  

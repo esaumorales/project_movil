@@ -1,0 +1,11 @@
+[
+    {
+      "id_reseña": 1,
+      "calificacion": 5,
+      "comentario": "Excelente lugar",
+      "fecha_reseña": "2024-02-15",
+      "PERSONA_id_persona": 1,
+      "CUARTO_id_cuarto": 1
+    }
+  ]
+  
