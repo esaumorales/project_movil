@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ustay_project/data/auth_service.dart';
-
 import 'package:ustay_project/domain/entities/user.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -30,11 +29,12 @@ class _LoginScreenState extends State<LoginScreen> {
           errorMessage = 'Correo o contraseña incorrectos';
         });
       } else {
-        // Si el usuario existe, redirige según su rol
+        // Si el usuario existe, limpiar mensaje de error y navegar
         setState(() {
           errorMessage = '';
         });
 
+        // Aquí asumimos que el rol viene como un campo en el usuario o en tu lógica
         String userRole = 'user'; // Asigna el rol del usuario si está disponible
         if (userRole == 'user') {
           Navigator.pushNamed(context, '/userDashboard');
@@ -63,15 +63,12 @@ class _LoginScreenState extends State<LoginScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Imagen del logo
                   Image.asset(
                     'assets/images/common/app-logo.png',
                     width: 150,
                     height: 150,
                   ),
                   const SizedBox(height: 20),
-
-                  // Texto alineado a la izquierda
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
@@ -85,8 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
-
-                  // Campo de Email
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: TextField(
@@ -107,8 +102,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-
-                  // Campo de Contraseña
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: TextField(
@@ -130,8 +123,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-
-                  // Mensaje de error
                   if (errorMessage.isNotEmpty)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -141,8 +132,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   const SizedBox(height: 12),
-
-                  // Botón de Ingresar
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: GestureDetector(
@@ -168,8 +157,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-
-                  // Olvidó su contraseña y O bien en una columna
                   Column(
                     children: [
                       const Text(
@@ -179,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 8), // Espacio entre los textos
+                      const SizedBox(height: 8),
                       const Text(
                         'O bien',
                         style: TextStyle(
@@ -188,7 +175,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      // Botón de Google
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: GestureDetector(
@@ -225,7 +211,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      // Botón de Facebook
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: GestureDetector(

@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:ustay_project/core/utils/config.dart';
 import 'package:ustay_project/domain/entities/user.dart';
 
-
 class AuthService {
   final String baseUrl = '${Config.baseUrlUsuario}/verify';
 
@@ -19,23 +18,28 @@ class AuthService {
     );
 
     if (response.statusCode == 200) {
-      // Si la autenticación es exitosa, el backend devuelve un JSON del usuario
+      // El backend debería devolver los datos completos del usuario en JSON
       final data = jsonDecode(response.body);
-      if (data == true) {
-        // Aquí puedes devolver un objeto Usuario o solo true, dependiendo de tu lógica
+      if (data is Map<String, dynamic>) {
+        return Usuario.fromJson(data); // Devuelve el usuario con datos completos
+      } else if (data == true) {
+        // Si solo devuelve `true`, crea un Usuario básico (sin detalles)
         return Usuario(
           correo: email,
           contrasena: password,
-          nombre: '', // Opcional, según tu backend
+          nombre: '',
           apellido: '',
           fechaRegistro: DateTime.now(),
         );
       } else {
-        // Si las credenciales son incorrectas
+        // Si las credenciales son incorrectas y devuelve `false`
         return null;
       }
+    } else if (response.statusCode == 401) {
+      // Si las credenciales son incorrectas, devuelve null
+      return null;
     } else {
-      // Si ocurre algún error en la solicitud
+      // Si ocurre algún otro error
       throw Exception('Error en la autenticación');
     }
   }
