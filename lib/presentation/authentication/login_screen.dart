@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ustay_project/core/widgets/custom_button.dart'; // Widget para botones personalizados
+import 'package:ustay_project/core/widgets/custom_social_media.dart';
 import 'package:ustay_project/data/auth_service.dart';
 import 'package:ustay_project/domain/entities/user.dart';
 
@@ -86,6 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 150,
                 ),
                 const SizedBox(height: 20),
+
+                // Título
                 Text(
                   'Ingrese sus credenciales',
                   style: GoogleFonts.kadwa(
@@ -94,6 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
+
                 // Campo de correo
                 TextField(
                   controller: _emailController,
@@ -105,6 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 15),
+
                 // Campo de contraseña
                 TextField(
                   controller: _passwordController,
@@ -117,6 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 const SizedBox(height: 10),
+
                 // Recordar inicio de sesión y recuperar contraseña
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,7 +141,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, '/sendEmail'); // Redirige a la ruta '/register'
+                        Navigator.pushNamed(context, '/sendEmail'); // Redirige a la ruta '/sendEmail'
                       },
                       child: const Text(
                         '¿Olvidó su contraseña?',
@@ -147,39 +154,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                // Botón de iniciar sesión con gradiente
-                GestureDetector(
-                  onTap: _isLoading ? null : _login,
-                  child: Container(
-                    width: double.infinity,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Colors.orange, Colors.deepOrange],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: _isLoading
-                          ? const CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          Colors.white,
-                        ),
-                      )
-                          : const Text(
-                        'INICIAR SESIÓN',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
+
+                // Botón de iniciar sesión
+                CustomButton(
+                  text: 'INICIAR SESIÓN',
+                  onPressed: _isLoading ? null : _login,
+                  isLoading: _isLoading,
                 ),
                 const SizedBox(height: 20),
+
                 // Separador con "o iniciar con"
                 Row(
                   children: [
@@ -207,58 +190,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 20),
+
+                // Botones de redes sociales
+                SocialMediaButton(
+                  text: "Continuar con Google",
+                  iconPath: "assets/images/common/google-logo.png",
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Google seleccionado")),
+                    );
+                  },
+                ),
                 const SizedBox(height: 10),
-                // Botones de Google y Facebook (uno debajo del otro, ancho completo)
-                Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          // Implementar lógica para Google
-                        },
-                        icon: Image.asset(
-                          'assets/images/common/google-logo.png',
-                          height: 20,
-                        ),
-                        label: const Text('Continuar con Google'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          side: const BorderSide(color: Colors.grey),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: () {
-                          // Implementar lógica para Facebook
-                        },
-                        icon: Image.asset(
-                          'assets/images/common/facebook-logo.png',
-                          height: 20,
-                        ),
-                        label: const Text('Continuar con Facebook'),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.black,
-                          side: const BorderSide(color: Colors.grey),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                        ),
-                      ),
-                    ),
-                  ],
+                SocialMediaButton(
+                  text: "Continuar con Facebook",
+                  iconPath: "assets/images/common/facebook-logo.png",
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Facebook seleccionado")),
+                    );
+                  },
                 ),
                 const SizedBox(height: 20),
+
                 // Registro
                 GestureDetector(
                   onTap: () {
