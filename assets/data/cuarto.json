@@ -1,7 +1,7 @@
 [
     {
       "id_cuarto": 1,
-      "descripcion": "Alvaro",
+      "descripcion": "Cuarto VIP",
       "precio": 500.0,
       "disponibilidad": "S",
       "n_cuarto": 1,
@@ -10,12 +10,57 @@
     },
     {
       "id_cuarto": 2,
-      "descripcion": "Votame tu ga",
+      "descripcion": "Cuarto Normal",
       "precio": 500.0,
-      "disponibilidad": "N",
+      "disponibilidad": "S",
       "n_cuarto": 2,
       "EDIFICIO_id_edificio": 2,
       "PERIODO_id_periodo": 2
-    }
+    },
+  {
+    "id_cuarto": 3,
+    "descripcion": "Cuarto Meh",
+    "precio": 500.0,
+    "disponibilidad": "S",
+    "n_cuarto": 1,
+    "EDIFICIO_id_edificio": 1,
+    "PERIODO_id_periodo": 1
+  },
+  {
+    "id_cuarto": 4,
+    "descripcion": "Cuarto Premmiun",
+    "precio": 500.0,
+    "disponibilidad": "S",
+    "n_cuarto": 2,
+    "EDIFICIO_id_edificio": 2,
+    "PERIODO_id_periodo": 2
+  },
+  {
+    "id_cuarto": 5,
+    "descripcion": "Cuarto Normal",
+    "precio": 500.0,
+    "disponibilidad": "S",
+    "n_cuarto": 2,
+    "EDIFICIO_id_edificio": 2,
+    "PERIODO_id_periodo": 2
+  },
+  {
+    "id_cuarto": 6,
+    "descripcion": "Cuarto Meh",
+    "precio": 500.0,
+    "disponibilidad": "N",
+    "n_cuarto": 1,
+    "EDIFICIO_id_edificio": 1,
+    "PERIODO_id_periodo": 1
+  },
+  {
+    "id_cuarto": 7,
+    "descripcion": "Cuarto Premmiun",
+    "precio": 500.0,
+    "disponibilidad": "N",
+    "n_cuarto": 2,
+    "EDIFICIO_id_edificio": 2,
+    "PERIODO_id_periodo": 2
+  }
   ]
   

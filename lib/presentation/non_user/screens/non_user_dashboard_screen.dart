@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:ustay_project/core/utils/navigation_utils.dart';
 import 'package:ustay_project/core/widgets/custom_footer.dart';
 import 'package:ustay_project/core/widgets/custom_header.dart';
+import 'package:ustay_project/data/data_service.dart';
+import 'package:ustay_project/domain/entities/room.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_bag_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_favorite_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_navigator_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_person_screen.dart';
+import 'package:ustay_project/presentation/widgets/room_card.dart';
 
 class NonUserDashboardScreen extends StatefulWidget {
   @override
@@ -14,6 +17,7 @@ class NonUserDashboardScreen extends StatefulWidget {
 }
 
 class _NonUserDashboardScreenState extends State<NonUserDashboardScreen> {
+  final DataService dataService = DataService();
   int _currentIndex = 2;
 
   void _onIconTap(int index) {
@@ -44,14 +48,31 @@ class _NonUserDashboardScreenState extends State<NonUserDashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomHeader(
-        title: "Explora como invitado",
+        title: "Dashboard",
         onNotificationTap: () {},
         onGridTap: () {},
         onSearchTap: () {},
         onTuneTap: () {},
       ),
-      body: Center(
-        child: Text("Inicia sesión para ver contenido personalizado."),
+      body: FutureBuilder<List<Room>>(
+        future: dataService.fetchRooms(), // Supone que tienes un método fetchRooms en DataService
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text("Error al cargar los datos"));
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(child: Text("No hay cuartos disponibles"));
+          } else {
+            final rooms = snapshot.data!;
+            return ListView.builder(
+              itemCount: rooms.length,
+              itemBuilder: (context, index) {
+                return RoomCard(room: rooms[index]);
+              },
+            );
+          }
+        },
       ),
       bottomNavigationBar: CustomFooter(
         currentIndex: _currentIndex,

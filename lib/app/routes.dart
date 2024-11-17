@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ustay_project/presentation/authentication/login_screen.dart';
 import 'package:ustay_project/presentation/authentication/registration_screen.dart';
+import 'package:ustay_project/presentation/authentication/send_email_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_bag_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_dashboard_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_favorite_screen.dart';
@@ -12,7 +13,6 @@ import 'package:ustay_project/presentation/user/screens/user_dashboard_screen.da
 import 'package:ustay_project/presentation/user/screens/user_favorite_screen.dart';
 import 'package:ustay_project/presentation/user/screens/user_navigator_screen.dart';
 import 'package:ustay_project/presentation/user/screens/user_person_screen.dart';
-// Otras importaciones aquí
 
 class AppRoutes {
   static const String userDashboard = '/userDashboard';
@@ -28,7 +28,7 @@ class AppRoutes {
   static const String nonUserFavorite = '/nonUserFavorite';
   static const String nonUserNavigator = '/nonUserNavigator';
   static const String nonUserPerson = '/nonUserPerson';
-  // Otras rutas...
+  static const String sendEmail = '/sendEmail';
 
   static Route<dynamic>? generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -44,31 +44,15 @@ class AppRoutes {
       case userPerson:
         return MaterialPageRoute(builder: (_) => UserPersonScreen());
 
-    // Rutas de usuario no registrado
+    // Login
       case login:
         return MaterialPageRoute(builder: (_) => LoginScreen());
 
+    // Register
       case register:
-      // Extrae los argumentos del settings
-        final args = settings.arguments as Map<String, String>?;
+        return MaterialPageRoute(
+          builder: (_) => RegisterScreen());
 
-        // Verifica que los argumentos no sean null y estén completos
-        if (args != null && args.containsKey('firstName') && args.containsKey('lastName') && args.containsKey('middleName')) {
-          return MaterialPageRoute(
-            builder: (_) => RegisterStepTwoScreen(
-              firstName: args['firstName']!,
-              lastName: args['lastName']!,
-              middleName: args['middleName']!,
-            ),
-          );
-        } else {
-          // Si faltan argumentos, muestra un mensaje de error o redirige a otra pantalla
-          return MaterialPageRoute(
-            builder: (_) => Scaffold(
-              body: Center(child: Text('Error: Faltan argumentos para el registro')),
-            ),
-          );
-        }
 
     // Rutas de usuario no registrado
       case nonUserNavigator:
@@ -81,7 +65,9 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => NonUserFavoriteScreen());
       case nonUserPerson:
         return MaterialPageRoute(builder: (_) => NonUserPersonScreen());
-
+      case sendEmail:
+        return MaterialPageRoute(builder: (_) => SendEmailScreen());
+    // Ruta por defecto
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

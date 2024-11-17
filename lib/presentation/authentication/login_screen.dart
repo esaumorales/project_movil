@@ -13,39 +13,51 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
   String errorMessage = '';
+  bool _isLoading = false;
+
+  // Validación de formato de correo
+  bool _isValidEmail(String email) {
+    final emailRegex = RegExp(r'^[a-zA-Z0-9._]+@[a-zA-Z0-9]+\.[a-zA-Z]+$');
+    return emailRegex.hasMatch(email);
+  }
 
   Future<void> _login() async {
-    // Obtén el email y contraseña ingresados
-    String email = _emailController.text;
-    String password = _passwordController.text;
+    setState(() {
+      _isLoading = true;
+      errorMessage = '';
+    });
+
+    String email = _emailController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      setState(() {
+        _isLoading = false;
+        errorMessage = 'Por favor ingresa correo y contraseña';
+      });
+      return;
+    }
+
+    if (!_isValidEmail(email)) {
+      setState(() {
+        _isLoading = false;
+        errorMessage = 'Por favor ingresa un correo válido';
+      });
+      return;
+    }
 
     try {
-      // Llama a `authenticate` en `AuthService`
-      final user = await _authService.authenticate(email, password);
-
-      if (user == null) {
-        // Si el usuario no se encuentra, muestra un mensaje de error
-        setState(() {
-          errorMessage = 'Correo o contraseña incorrectos';
-        });
-      } else {
-        // Si el usuario existe, limpiar mensaje de error y navegar
-        setState(() {
-          errorMessage = '';
-        });
-
-        // Aquí asumimos que el rol viene como un campo en el usuario o en tu lógica
-        String userRole = 'user'; // Asigna el rol del usuario si está disponible
-        if (userRole == 'user') {
-          Navigator.pushNamed(context, '/userDashboard');
-        } else if (userRole == 'partner') {
-          Navigator.pushNamed(context, '/partnerDashboard');
-        }
+      Usuario? user = await _authService.login(email, password);
+      if (user != null) {
+        Navigator.pushNamed(context, '/userDashboard', arguments: user);
       }
     } catch (e) {
-      // Maneja cualquier error de red o autenticación
       setState(() {
-        errorMessage = 'Error en la autenticación. Inténtalo de nuevo.';
+        errorMessage = e.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
       });
     }
   }
@@ -53,204 +65,222 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Color(0xFFE9E9E9),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
         ),
-        child: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/common/app-logo.png',
-                    width: 150,
-                    height: 150,
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Logo
+                Image.asset(
+                  'assets/images/common/app-logo.png',
+                  height: 150,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Ingrese sus credenciales',
+                  style: GoogleFonts.kadwa(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  const SizedBox(height: 20),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                      child: Text(
-                        'Ingrese sus credenciales',
-                        style: GoogleFonts.kadwa(
+                ),
+                const SizedBox(height: 20),
+                // Campo de correo
+                TextField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: 'Correo',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                // Campo de contraseña
+                TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                // Recordar inicio de sesión y recuperar contraseña
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: false, // Cambiar según tu lógica
+                          onChanged: (value) {
+                            // Implementar lógica para "Recordar inicio de sesión"
+                          },
+                        ),
+                        const Text('Recordar inicio de sesión'),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/sendEmail'); // Redirige a la ruta '/register'
+                      },
+                      child: const Text(
+                        '¿Olvidó su contraseña?',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                // Botón de iniciar sesión con gradiente
+                GestureDetector(
+                  onTap: _isLoading ? null : _login,
+                  child: Container(
+                    width: double.infinity,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Colors.orange, Colors.deepOrange],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Center(
+                      child: _isLoading
+                          ? const CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Colors.white,
+                        ),
+                      )
+                          : const Text(
+                        'INICIAR SESIÓN',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: TextField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        fillColor: Color(0xFFE9E9E9),
-                        filled: true,
-                        hintText: 'Correo',
-                        contentPadding: const EdgeInsets.only(left: 20.0),
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey, width: 2.0),
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(8),
-                            bottomRight: Radius.circular(8),
-                          ),
-                        ),
+                ),
+                const SizedBox(height: 20),
+                // Separador con "o iniciar con"
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: TextField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        fillColor: Color(0xFFE9E9E9),
-                        filled: true,
-                        hintText: 'Contraseña',
-                        contentPadding: const EdgeInsets.only(left: 20.0),
-                        border: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey, width: 2.0),
-                          borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(8),
-                            bottomRight: Radius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  if (errorMessage.isNotEmpty)
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
-                        errorMessage,
-                        style: TextStyle(color: Colors.red, fontSize: 14),
-                      ),
-                    ),
-                  const SizedBox(height: 12),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                    child: GestureDetector(
-                      onTap: _login,
-                      child: Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE16B15),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Ingresar',
-                            style: TextStyle(
-                              color: Color(0xffF0EDD4),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Column(
-                    children: [
-                      const Text(
-                        '¿Olvidó su contraseña?',
-                        style: TextStyle(
-                          color: Color(0xFF00006B),
+                        'o iniciar con',
+                        style: GoogleFonts.kadwa(
+                          color: Colors.grey,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'O bien',
-                        style: TextStyle(
-                          color: Color(0xFF000000),
-                          fontWeight: FontWeight.bold,
+                    ),
+                    const Expanded(
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 1,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                // Botones de Google y Facebook (uno debajo del otro, ancho completo)
+                Column(
+                  children: [
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          // Implementar lógica para Google
+                        },
+                        icon: Image.asset(
+                          'assets/images/common/google-logo.png',
+                          height: 20,
+                        ),
+                        label: const Text('Continuar con Google'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          side: const BorderSide(color: Colors.grey),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Lógica para autenticación con Google
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(1),
-                              color: Color(0xFFE9E9E9),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/common/google-logo.png',
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                const SizedBox(width: 10),
-                                const Text(
-                                  'Continuar con Google',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
+                    ),
+                    const SizedBox(height: 10),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          // Implementar lógica para Facebook
+                        },
+                        icon: Image.asset(
+                          'assets/images/common/facebook-logo.png',
+                          height: 20,
+                        ),
+                        label: const Text('Continuar con Facebook'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          side: const BorderSide(color: Colors.grey),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                // Registro
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/register'); // Redirige a la ruta '/register'
+                  },
+                  child: Text.rich(
+                    TextSpan(
+                      text: '¿No tienes una cuenta? ',
+                      style: const TextStyle(color: Colors.grey),
+                      children: [
+                        TextSpan(
+                          text: 'Regístrese ahora',
+                          style: GoogleFonts.kadwa(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Lógica para autenticación con Facebook
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(1),
-                              color: Color(0xFFE9E9E9),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/common/facebook-logo.png',
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                const SizedBox(width: 10),
-                                const Text(
-                                  'Continuar con Facebook',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 16),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

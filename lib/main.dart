@@ -29,7 +29,6 @@ class _SplashScreenState extends State<SplashScreen> {
     _checkAuthentication(); // Verifica autenticación al iniciar
   }
 
-  // Simulación de verificación de autenticación
   Future<void> _checkAuthentication() async {
     await Future.delayed(
         Duration(seconds: 2)); // Simula un retardo de 2 segundos
@@ -42,9 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
-  // Simulación de autenticación: aquí deberías implementar la lógica real
   Future<bool> _isUserAuthenticated() async {
-    // Aquí podrías consultar la autenticación real (por ejemplo, usando Firebase)
     return false; // Cambia esto según la autenticación
   }
 

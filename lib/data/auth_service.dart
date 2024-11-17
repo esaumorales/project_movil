@@ -1,46 +1,44 @@
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:ustay_project/core/utils/config.dart';
+import 'dart:convert';
 import 'package:ustay_project/domain/entities/user.dart';
 
 class AuthService {
-  final String baseUrl = '${Config.baseUrlUsuario}/verify';
+  // Método para iniciar sesión
+  Future<Usuario?> login(String correo, String contrasena) async {
+    final url = Uri.parse('${Config.baseUrlUsuario}/login');
 
-  // Método para autenticar al usuario
-  Future<Usuario?> authenticate(String email, String password) async {
     final response = await http.post(
-      Uri.parse(baseUrl),
+      url,
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
-        'correo': email,
-        'contrasena': password,
+        'correo': correo,
+        'contrasena': contrasena,
       }),
     );
 
     if (response.statusCode == 200) {
-      // El backend debería devolver los datos completos del usuario en JSON
       final data = jsonDecode(response.body);
-      if (data is Map<String, dynamic>) {
-        return Usuario.fromJson(data); // Devuelve el usuario con datos completos
-      } else if (data == true) {
-        // Si solo devuelve `true`, crea un Usuario básico (sin detalles)
-        return Usuario(
-          correo: email,
-          contrasena: password,
-          nombre: '',
-          apellido: '',
-          fechaRegistro: DateTime.now(),
-        );
-      } else {
-        // Si las credenciales son incorrectas y devuelve `false`
-        return null;
-      }
+      return Usuario.fromJson(data);
     } else if (response.statusCode == 401) {
-      // Si las credenciales son incorrectas, devuelve null
-      return null;
+      throw Exception('Credenciales incorrectas. Verifica tu correo y contraseña.');
     } else {
-      // Si ocurre algún otro error
-      throw Exception('Error en la autenticación');
+      throw Exception('Error en el servidor. Intenta nuevamente más tarde.');
+    }
+  }
+
+  // Método para registrar un nuevo usuario
+  Future<void> register(Usuario usuario) async {
+    final url = Uri.parse('${Config.baseUrlUsuario}/save');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(usuario.toJson()),
+    );
+
+    if (response.statusCode != 201) {
+      throw Exception('Error al registrar usuario: ${response.body}');
     }
   }
 }
