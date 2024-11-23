@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             // Implementar lógica para "Recordar inicio de sesión"
                           },
                         ),
-                        const Text('Recordar inicio de sesión'),
+                       // const Text('Recordar inicio de sesión'),
                       ],
                     ),
                     GestureDetector(

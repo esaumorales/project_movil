@@ -39,6 +39,8 @@ dependencies:
   leak_tracker: ^10.0.5
   animated_notch_bottom_bar: ^1.0.3
   shared_preferences: ^2.1.0
+  carousel_slider: ^4.0.0 # Última versión estable
+  smooth_page_indicator: ^1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

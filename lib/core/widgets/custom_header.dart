@@ -19,7 +19,7 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color(0xFF0A2440),
+      backgroundColor: Color(0xFF010B1A),
       elevation: 0,
       automaticallyImplyLeading: false,
       title: Row(
@@ -31,72 +31,50 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
             width: 100,
             height: 100,
             fit: BoxFit.contain,
+
           ),
+
           // Iconos en el lado derecho organizados en 2x2 con mayor padding superior
-          // Padding(
-          //   padding: const EdgeInsets.only(
-          //       top: 10.0), // Espacio superior para bajar más los iconos
-          //   child: Column(
-          //     mainAxisSize: MainAxisSize.min,
-          //     crossAxisAlignment: CrossAxisAlignment.end,
-          //     children: [
-          //       Row(
-          //         mainAxisSize: MainAxisSize.min,
-          //         children: [
-          //           IconButton(
-          //             icon: Image.asset(
-          //               'assets/icons/icon-notification.png',
-          //               width: 24,
-          //               height: 24,
-          //             ),
-          //             onPressed: onNotificationTap,
-          //             padding: EdgeInsets.zero,
-          //           ),
-          //           SizedBox(width: 8),
-          //           IconButton(
-          //             icon: Image.asset(
-          //               'assets/icons/icon-grid.png',
-          //               width: 24,
-          //               height: 24,
-          //             ),
-          //             onPressed: onGridTap,
-          //             padding: EdgeInsets.zero,
-          //           ),
-          //         ],
-          //       ),
-          //       SizedBox(height: 8), // Espacio entre filas
-          //       Row(
-          //         mainAxisSize: MainAxisSize.min,
-          //         children: [
-          //           IconButton(
-          //             icon: Image.asset(
-          //               'assets/icons/icon-search.png',
-          //               width: 24,
-          //               height: 24,
-          //             ),
-          //             onPressed: onSearchTap,
-          //             padding: EdgeInsets.zero,
-          //           ),
-          //           SizedBox(width: 8),
-          //           IconButton(
-          //             icon: Image.asset(
-          //               'assets/icons/icon-filter.png',
-          //               width: 24,
-          //               height: 24,
-          //             ),
-          //             onPressed: onTuneTap,
-          //             padding: EdgeInsets.zero,
-          //           ),
-          //         ],
-          //       ),
-          //     ],
-          //   ),
-          // ),
+           Padding(
+             padding: const EdgeInsets.only(
+                 top: 10.0), // Espacio superior para bajar más los iconos
+             child: Column(
+               mainAxisSize: MainAxisSize.min,
+               crossAxisAlignment: CrossAxisAlignment.end,
+               children: [
+                 Row(
+                   mainAxisSize: MainAxisSize.min,
+                   children: [
+                     IconButton(
+                       icon: Image.asset(
+                         'assets/icons/icon-notification.png',
+                         width: 24,
+                         height: 24,
+                       ),
+                       onPressed: onNotificationTap,
+                       padding: EdgeInsets.zero,
+                     ),
+                     SizedBox(width: 8),
+                     IconButton(
+                       icon: Image.asset(
+                         'assets/icons/icon-grid.png',
+                         width: 24,
+                         height: 24,
+                       ),
+                       onPressed: onGridTap,
+                       padding: EdgeInsets.zero,
+                     ),
+                   ],
+                 ),
+                 SizedBox(height: 8), // Espacio entre filas
+               ],
+             ),
+           ),
         ],
       ),
     );
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(100.0); // Ajuste de altura a 100
+  Size get preferredSize => Size.fromHeight(60.0); // Ajuste de altura a 100
 }

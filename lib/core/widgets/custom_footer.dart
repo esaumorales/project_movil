@@ -1,4 +1,3 @@
-// custom_footer.dart
 import 'package:flutter/material.dart';
 
 class CustomFooter extends StatelessWidget {
@@ -15,13 +14,13 @@ class CustomFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      height: 70,
-      decoration: BoxDecoration(
-        color: Color(0xFFF6F6F6),
+      height: 64,
+      decoration: const BoxDecoration(
+        color: Color(0xFF010B1A),
         boxShadow: [
           BoxShadow(
-            color: Colors.black12,
-            blurRadius: 10,
+            color: Color(0xFFFFBB0C),
+            blurRadius: 8,
             offset: Offset(0, -2),
           ),
         ],
@@ -29,46 +28,44 @@ class CustomFooter extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildIcon('assets/icons/icon-navigator.png', 0),
-          _buildIcon('assets/icons/icon-buy.png', 1),
-          _buildIcon('assets/icons/icon-home.png', 2, isCentralIcon: true),
-          _buildIcon('assets/icons/icon-favorite.png', 3),
-          _buildIcon('assets/icons/icon-person.png', 4),
+          _buildIcon('assets/icons/icon-home.png', 0, isCentralIcon: true),
+          _buildIcon('assets/icons/icon-favorite.png', 1),
+          _buildIcon('assets/icons/icon-person.png', 2),
         ],
       ),
     );
   }
 
   Widget _buildIcon(String assetPath, int index, {bool isCentralIcon = false}) {
-    bool isSelected = currentIndex == index;
+    final bool isSelected = currentIndex == index;
 
     return GestureDetector(
       onTap: () => onTap(index),
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 600),
         curve: Curves.easeOut,
         padding: EdgeInsets.all(isSelected ? 6 : 8),
         transform: isSelected
-            ? Matrix4.translationValues(0, -10, 0)
+            ? Matrix4.translationValues(0, -32, 0)
             : Matrix4.identity(),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFE9E9E9) : Colors.transparent,
+          color: isSelected ? const Color(0xFF010B1A) : Colors.transparent,
           shape: BoxShape.circle,
           boxShadow: isSelected
               ? [
-                  BoxShadow(
-                    color: const Color(0xFF000000).withOpacity(0.5),
-                    blurRadius: 15,
-                    offset: Offset(0, 3),
-                  ),
-                ]
+            BoxShadow(
+              color: Colors.orangeAccent.withOpacity(0.9),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
+            ),
+          ]
               : [],
         ),
         child: Image.asset(
           assetPath,
-          width: isSelected ? 42 : 28,
-          height: isSelected ? 42 : 28,
-          color: isSelected ? Colors.orange : Colors.black,
+          width: isSelected ? 52 : 58,
+          height: isSelected ? 52 : 58,
+          color: isSelected ? Colors.orange : Colors.white,
         ),
       ),
     );

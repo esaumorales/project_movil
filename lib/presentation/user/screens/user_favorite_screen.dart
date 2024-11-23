@@ -14,7 +14,7 @@ class UserFavoriteScreen extends StatefulWidget {
 }
 
 class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
-  int _currentIndex = 3; // Posición de "Favoritos" en el footer
+  int _currentIndex = 1; // Posición de "Favoritos" en el footer
 
   void _onIconTap(int index) {
     setState(() {
@@ -23,19 +23,19 @@ class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
 
     // Navega según el índice seleccionado
     switch (index) {
+//      case 0:
+// navigateWithoutAnimation(context, UserNavigatorScreen());
+//                break;
+//      case 1:
+//        navigateWithoutAnimation(context, UserBagScreen());
+//        break;
       case 0:
-        navigateWithoutAnimation(context, UserNavigatorScreen());
-        break;
-      case 1:
-        navigateWithoutAnimation(context, UserBagScreen());
-        break;
-      case 2:
         navigateWithoutAnimation(context, UserDashboardScreen());
         break;
-      case 3:
+      case 1:
         navigateWithoutAnimation(context, UserFavoriteScreen());
         break;
-      case 4:
+      case 2:
         navigateWithoutAnimation(context, UserPersonScreen());
         break;
     }

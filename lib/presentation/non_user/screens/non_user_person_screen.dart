@@ -112,25 +112,26 @@ class NonUserPersonScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: CustomFooter(
-        currentIndex: 4,
+        currentIndex: 2,
         onTap: (index) {
-          switch (index) {
-            case 0:
-              navigateWithoutAnimation(context, NonUserNavigatorScreen());
-              break;
-            case 1:
-              navigateWithoutAnimation(context, NonUserBagScreen());
-              break;
-            case 2:
-              navigateWithoutAnimation(context, NonUserDashboardScreen());
-              break;
-            case 3:
-              navigateWithoutAnimation(context, NonUserFavoriteScreen());
-              break;
-            case 4:
-              navigateWithoutAnimation(context, NonUserPersonScreen());
-              break;
-          }
+    switch (index) {
+//      case 0:
+//        navigateWithoutAnimation(context, NonUserNavigatorScreen());
+//        break;
+//      case 1:
+//        navigateWithoutAnimation(context, NonUserBagScreen());
+//        break;
+    case 0:
+    navigateWithoutAnimation(context, NonUserDashboardScreen());
+    break;
+    case 1:
+    navigateWithoutAnimation(context, NonUserFavoriteScreen());
+    break;
+    case 2:
+    navigateWithoutAnimation(context, NonUserPersonScreen());
+    break;
+    }
+
         },
       ),
     );
