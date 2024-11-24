@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ustay_project/core/utils/navigation_utils.dart';
 import 'package:ustay_project/core/widgets/custom_footer.dart';
-import 'package:ustay_project/presentation/non_user/screens/non_user_bag_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_dashboard_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_favorite_screen.dart';
-import 'package:ustay_project/presentation/non_user/screens/non_user_navigator_screen.dart';
 
 class NonUserPersonScreen extends StatelessWidget {
   @override
@@ -115,12 +113,6 @@ class NonUserPersonScreen extends StatelessWidget {
         currentIndex: 2,
         onTap: (index) {
     switch (index) {
-//      case 0:
-//        navigateWithoutAnimation(context, NonUserNavigatorScreen());
-//        break;
-//      case 1:
-//        navigateWithoutAnimation(context, NonUserBagScreen());
-//        break;
     case 0:
     navigateWithoutAnimation(context, NonUserDashboardScreen());
     break;

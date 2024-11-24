@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart'; // Asegúrate de tener el paquete instalado
 import 'package:ustay_project/core/utils/navigation_utils.dart';
 import 'package:ustay_project/core/widgets/custom_footer.dart';
 import 'package:ustay_project/core/widgets/custom_header.dart';
-import 'package:ustay_project/presentation/non_user/screens/non_user_bag_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_favorite_screen.dart';
-import 'package:ustay_project/presentation/non_user/screens/non_user_navigator_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_person_screen.dart';
-import 'package:ustay_project/presentation/widgets/room_card.dart';
 
 class NonUserDashboardScreen extends StatefulWidget {
   @override
@@ -23,12 +21,6 @@ class _NonUserDashboardScreenState extends State<NonUserDashboardScreen> {
 
     // Navega según el índice seleccionado
     switch (index) {
-//      case 0:
-//        navigateWithoutAnimation(context, NonUserNavigatorScreen());
-//        break;
-//      case 1:
-//        navigateWithoutAnimation(context, NonUserBagScreen());
-//        break;
       case 0:
         navigateWithoutAnimation(context, NonUserDashboardScreen());
         break;
@@ -41,70 +33,162 @@ class _NonUserDashboardScreenState extends State<NonUserDashboardScreen> {
     }
   }
 
-  void _showLoginMessage() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Función no disponible"),
-          content: const Text(
-            "Para usar esta función, por favor regístrate o inicia sesión en tu cuenta.",
-          ),
-          actions: [
-            TextButton(
-              child: const Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomHeader(title: "Habitaciones"), // Tu Header reutilizable
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Fondo redondeado en la parte superior
+            Stack(
+              children: [
+                Container(
+                  height: 200,
+                  decoration: const BoxDecoration(
+                    color: Color(0xFF010B1A),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(100),
+                      bottomRight: Radius.circular(100),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Sección "Lo mejor de lo mejor"
+                      _buildSectionHeader(
+                        title: "Lo mejor de lo mejor",
+                        isSpecialFont: true,
+                      ),
+                      const SizedBox(height: 16),
+                      _buildPlaceholder(
+                        text: "Aquí se pondrán las tarjetas de 'Lo mejor de lo mejor'.",
+                        height: 200,
+                      ),
+                      const SizedBox(height: 32),
+
+                      // Sección "Lista de inmuebles"
+                      _buildSectionHeader(
+                        title: "Lista de inmuebles",
+                        isSpecialFont: false,
+                        onTap: () {
+                          Navigator.pushNamed(context, '/properties');
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      _buildPlaceholder(
+                        text: "Aquí se pondrán las tarjetas de 'Lista de inmuebles'.",
+                        height: 120,
+                      ),
+                      const SizedBox(height: 32),
+
+                      // Sección "Los más populares"
+                      _buildSectionHeader(
+                        title: "Los más populares",
+                        isSpecialFont: false,
+                        onTap: () {
+                          Navigator.pushNamed(context, '/popular');
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      _buildPlaceholder(
+                        text: "Aquí se pondrán las tarjetas de 'Los más populares'.",
+                        height: 120,
+                      ),
+                      const SizedBox(height: 32),
+
+                      // Sección "Los mejores precios"
+                      _buildSectionHeader(
+                        title: "Los mejores precios",
+                        isSpecialFont: false,
+                        onTap: () {
+                          Navigator.pushNamed(context, '/prices');
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      _buildPlaceholder(
+                        text: "Aquí se pondrán las tarjetas de 'Los mejores precios'.",
+                        height: 120,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
-        );
-      },
+        ),
+      ),
+      bottomNavigationBar: CustomFooter(
+        currentIndex: _currentIndex, // Footer reutilizable
+        onTap: _onIconTap,
+      ),
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    // Datos de prueba para renderizar las habitaciones
-    final List<Map<String, dynamic>> roomDataList = [
-      {
-        'inmueble': {
-          'descripcion': 'Habitación amplia cerca al parque',
-          'precio': 500,
-          'disponibilidad': true,
-        },
-        'partnerName': 'Partner Ejemplo',
-      },
-      {
-        'inmueble': {
-          'descripcion': 'Habitación con buena vista',
-          'precio': 450,
-          'disponibilidad': false,
-        },
-        'partnerName': 'Partner Prueba',
-      },
-    ];
+    Widget _buildSectionHeader({
+      required String title,
+      required bool isSpecialFont,
+      VoidCallback? onTap, // Cambiar a opcional
+    }) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: isSpecialFont
+                ? GoogleFonts.spicyRice(
+              fontSize: 20,
+              color: const Color(0xFFF3E652), // Amarillo
+              fontWeight: FontWeight.bold,
+            )
+                : const TextStyle(
+              fontSize: 20,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          if (onTap != null) // Renderizar solo si se proporciona `onTap`
+            GestureDetector(
+              onTap: onTap,
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.orange, width: 2),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Text(
+                  "Ver todo",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.orange,
+                    fontWeight: FontWeight.normal, // Sin negrita
+                  ),
+                ),
+              ),
+            ),
+        ],
+      );
+    }
 
-    return Scaffold(
-      appBar: CustomHeader(title: "Habitaciones"),
-      body: ListView.builder(
-        itemCount: roomDataList.length,
-        itemBuilder: (context, index) {
-          final roomData = roomDataList[index];
-          final inmueble = roomData['inmueble'];
-          final partnerName = roomData['partnerName'];
 
-          return RoomCard(
-            inmueble: inmueble,
-            partnerName: partnerName,
-            onFavoriteTap: _showLoginMessage,
-            onCardTap: _showLoginMessage,
-          );
-        },
+  Widget _buildPlaceholder({required String text, required double height}) {
+    return Container(
+      height: height,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.grey.shade300,
+        borderRadius: BorderRadius.circular(12),
       ),
-      bottomNavigationBar: CustomFooter(
-        currentIndex: _currentIndex,
-        onTap: _onIconTap,
+      child: Center(
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: Colors.black54, fontSize: 14),
+        ),
       ),
     );
   }

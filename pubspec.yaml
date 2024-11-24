@@ -82,6 +82,9 @@ flutter:
     - assets/icons/icon-notification.png
     - assets/icons/icon-person.png
     - assets/icons/icon-search.png
+    - assets/icons/icon-session.png
+    - assets/icons/icon-password.png
+    - assets/icons/icon-email.png
 
     #Data
     - assets/data/usuario.json
