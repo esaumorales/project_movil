@@ -1,8 +1,11 @@
 class Zona {
-  final int? id;
+  final int id;
   final String nombreZona;
 
-  Zona({this.id, required this.nombreZona});
+  Zona({
+    required this.id,
+    required this.nombreZona,
+  });
 
   factory Zona.fromJson(Map<String, dynamic> json) {
     return Zona(

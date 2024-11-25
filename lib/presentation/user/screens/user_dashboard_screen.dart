@@ -5,6 +5,8 @@ import 'package:ustay_project/core/widgets/custom_footer.dart';
 import 'package:ustay_project/core/widgets/custom_header.dart';
 import 'package:ustay_project/presentation/user/screens/user_favorite_screen.dart';
 import 'package:ustay_project/presentation/user/screens/user_person_screen.dart';
+import 'package:ustay_project/presentation/widgets/room_carousel_cards.dart';
+import 'package:ustay_project/presentation/widgets/small_card.dart';
 
 class UserDashboardScreen extends StatefulWidget {
   @override
@@ -14,12 +16,92 @@ class UserDashboardScreen extends StatefulWidget {
 class _UserDashboardScreenState extends State<UserDashboardScreen> {
   int _currentIndex = 0;
 
+  // Datos estáticos de ejemplo
+  final List<Map<String, dynamic>> staticRooms = [
+    {
+      "title": "Habitación Deluxe",
+      "price": "S/250",
+      "partnerName": "Juan Perez.",
+      "description": "Cerca al centro",
+      "imageUrl": "https://example.com/room_1.jpg",
+      "rating": 4.8,
+      "services": [Icons.local_laundry_service, Icons.tv, Icons.wifi],
+    },
+    {
+      "title": "Habitación Económica",
+      "price": "S/150",
+      "partnerName": "Juan P.",
+      "description": "Zona tranquila",
+      "imageUrl": "https://example.com/room_2.jpg",
+      "rating": 4.5,
+      "services": [Icons.home, Icons.kitchen, Icons.pool],
+    },
+    {
+      "title": "Habitación Duo",
+      "price": "S/220",
+      "partnerName": "Olimpio R.",
+      "description": "Cerca al centro",
+      "imageUrl": "https://example.com/room_1.jpg",
+      "rating": 4.8,
+      "services": [Icons.local_laundry_service, Icons.tv, Icons.wifi],
+    },
+
+  ];
+
+  final List<Map<String, dynamic>> staticSmallRooms = [
+    {
+      "title": "Cuarto A",
+      "price": "S/200",
+      "partnerName": "Partner 1",
+      "imageUrl": "https://example.com/room_3.jpg",
+    },
+    {
+      "title": "Cuarto B",
+      "price": "S/300",
+      "partnerName": "Partner 2",
+      "imageUrl": "https://example.com/room_4.jpg",
+    },
+  ];
+
+  final List<Map<String, dynamic>> popularRooms = [
+    {
+      "title": "Habitación Popular 1",
+      "price": "S/180",
+      "partnerName": "Socio 1",
+      "imageUrl": "https://example.com/room_5.jpg",
+      "rating": 4.7,
+    },
+    {
+      "title": "Habitación Popular 2",
+      "price": "S/220",
+      "partnerName": "Socio 2",
+      "imageUrl": "https://example.com/room_6.jpg",
+      "rating": 4.6,
+    },
+  ];
+
+  final List<Map<String, dynamic>> bestPriceRooms = [
+    {
+      "title": "Habitación Económica 1",
+      "price": "S/120",
+      "partnerName": "Socio 3",
+      "imageUrl": "https://example.com/room_7.jpg",
+      "rating": 4.2,
+    },
+    {
+      "title": "Habitación Económica 2",
+      "price": "S/130",
+      "partnerName": "Socio 4",
+      "imageUrl": "https://example.com/room_8.jpg",
+      "rating": 4.3,
+    },
+  ];
+
   void _onIconTap(int index) {
     setState(() {
       _currentIndex = index;
     });
 
-    // Navega según el índice seleccionado
     switch (index) {
       case 0:
         navigateWithoutAnimation(context, UserDashboardScreen());
@@ -36,12 +118,11 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomHeader(title: "Habitaciones"), // Tu Header reutilizable
+      appBar: CustomHeader(title: "Habitaciones"),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Fondo redondeado en la parte superior
             Stack(
               children: [
                 Container(
@@ -59,19 +140,13 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Sección "Lo mejor de lo mejor"
                       _buildSectionHeader(
                         title: "Lo mejor de lo mejor",
                         isSpecialFont: true,
                       ),
                       const SizedBox(height: 16),
-                      _buildPlaceholder(
-                        text: "Aquí se pondrán las tarjetas de 'Lo mejor de lo mejor'.",
-                        height: 200,
-                      ),
+                      RoomCarouselWithCards(rooms: staticRooms), // Nuevo carrusel de tarjetas
                       const SizedBox(height: 32),
-
-                      // Sección "Lista de inmuebles"
                       _buildSectionHeader(
                         title: "Lista de inmuebles",
                         isSpecialFont: false,
@@ -80,13 +155,8 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
-                      _buildPlaceholder(
-                        text: "Aquí se pondrán las tarjetas de 'Lista de inmuebles'.",
-                        height: 120,
-                      ),
+                      _buildSmallRoomList(staticSmallRooms),
                       const SizedBox(height: 32),
-
-                      // Sección "Los más populares"
                       _buildSectionHeader(
                         title: "Los más populares",
                         isSpecialFont: false,
@@ -95,13 +165,8 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
-                      _buildPlaceholder(
-                        text: "Aquí se pondrán las tarjetas de 'Los más populares'.",
-                        height: 120,
-                      ),
+                      _buildSmallRoomList(popularRooms),
                       const SizedBox(height: 32),
-
-                      // Sección "Los mejores precios"
                       _buildSectionHeader(
                         title: "Los mejores precios",
                         isSpecialFont: false,
@@ -110,10 +175,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
                         },
                       ),
                       const SizedBox(height: 16),
-                      _buildPlaceholder(
-                        text: "Aquí se pondrán las tarjetas de 'Los mejores precios'.",
-                        height: 120,
-                      ),
+                      _buildSmallRoomList(bestPriceRooms),
                     ],
                   ),
                 ),
@@ -123,16 +185,35 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
         ),
       ),
       bottomNavigationBar: CustomFooter(
-        currentIndex: _currentIndex, // Footer reutilizable
+        currentIndex: _currentIndex,
         onTap: _onIconTap,
       ),
+    );
+  }
+
+  Widget _buildSmallRoomList(List<Map<String, dynamic>> rooms) {
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: rooms.map((room) {
+        return SmallCard(
+          title: room["title"] ?? "Sin título",
+          price: room["price"] ?? "S/0.00",
+          partnerName: room["partnerName"] ?? "Sin partner",
+          rating: room["rating"] ?? 0.0,
+          imageUrl: room["imageUrl"] ?? 'assets/images/common/room_placeholder.png',
+          onTap: () {
+            debugPrint("Habitación seleccionada: ${room["title"]}");
+          },
+        );
+      }).toList(),
     );
   }
 
   Widget _buildSectionHeader({
     required String title,
     required bool isSpecialFont,
-    VoidCallback? onTap, // Cambiar a opcional
+    VoidCallback? onTap,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,7 +223,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
           style: isSpecialFont
               ? GoogleFonts.spicyRice(
             fontSize: 20,
-            color: const Color(0xFFF3E652), // Amarillo
+            color: const Color(0xFFF3E652),
             fontWeight: FontWeight.bold,
           )
               : const TextStyle(
@@ -151,7 +232,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        if (onTap != null) // Renderizar solo si se proporciona `onTap`
+        if (onTap != null)
           GestureDetector(
             onTap: onTap,
             child: Container(
@@ -162,34 +243,11 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
               ),
               child: const Text(
                 "Ver todo",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.orange,
-                  fontWeight: FontWeight.normal, // Sin negrita
-                ),
+                style: TextStyle(fontSize: 14, color: Colors.orange),
               ),
             ),
           ),
       ],
-    );
-  }
-
-
-  Widget _buildPlaceholder({required String text, required double height}) {
-    return Container(
-      height: height,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Center(
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.black54, fontSize: 14),
-        ),
-      ),
     );
   }
 }

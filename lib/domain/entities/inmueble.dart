@@ -1,3 +1,9 @@
+import 'package:ustay_project/domain/entities/edificio.dart';
+import 'package:ustay_project/domain/entities/especificacion.dart';
+import 'package:ustay_project/domain/entities/periodo.dart';
+import 'package:ustay_project/domain/entities/servicio.dart';
+import 'package:ustay_project/domain/entities/tipo.dart';
+
 class Inmueble {
   final int id;
   final String descripcion;
@@ -5,12 +11,11 @@ class Inmueble {
   final double precio;
   final int nCuarto;
   final bool ilove;
-  final List<String> especificaciones;
-  final List<String> servicios;
-  final double calificacion;
-  final String? usuario;
-  final int partnerId;
-  final int? edificioId; // Hacerlo opcional
+  final Edificio edificio;
+  final List<Servicio> servicio;
+  final List<Especificacion> especificacion;
+  final Tipo tipo;
+  final Periodo periodo;
 
   Inmueble({
     required this.id,
@@ -19,30 +24,30 @@ class Inmueble {
     required this.precio,
     required this.nCuarto,
     required this.ilove,
-    required this.especificaciones,
-    required this.servicios,
-    required this.calificacion,
-    this.usuario,
-    required this.partnerId,
-    this.edificioId, // Opcional
+    required this.edificio,
+    required this.servicio,
+    required this.especificacion,
+    required this.tipo,
+    required this.periodo,
   });
 
   factory Inmueble.fromJson(Map<String, dynamic> json) {
     return Inmueble(
-      id: json['id'] ?? 0,
-      descripcion: json['descripcion'] ?? '',
-      disponibilidad: json['disponibilidad'] ?? false,
-      precio: (json['precio'] != null) ? json['precio'].toDouble() : 0.0,
-      nCuarto: json['n_cuarto'] ?? 0,
-      ilove: json['ilove'] ?? false,
-      especificaciones: List<String>.from(json['especificaciones'] ?? []),
-      servicios: List<String>.from(json['servicios'] ?? []),
-      calificacion: (json['calificacion'] != null)
-          ? double.tryParse(json['calificacion'].toString()) ?? 0.0
-          : 0.0,
-      usuario: json['usuario'], // Puede ser nulo
-      partnerId: json['partnerId'] ?? 0,
-      edificioId: json['edificio']?['idEdificio'] , // Manejo de valor nulo
+      id: json['id'],
+      descripcion: json['descripcion'],
+      disponibilidad: json['disponibilidad'],
+      precio: json['precio'],
+      nCuarto: json['n_cuarto'],
+      ilove: json['ilove'],
+      edificio: Edificio.fromJson(json['edificio']),
+      servicio: (json['servicio'] as List)
+          .map((servicio) => Servicio.fromJson(servicio))
+          .toList(),
+      especificacion: (json['especificacion'] as List)
+          .map((especificacion) => Especificacion.fromJson(especificacion))
+          .toList(),
+      tipo: Tipo.fromJson(json['tipo']),
+      periodo: Periodo.fromJson(json['periodo']),
     );
   }
 
@@ -54,12 +59,11 @@ class Inmueble {
       'precio': precio,
       'n_cuarto': nCuarto,
       'ilove': ilove,
-      'especificaciones': especificaciones,
-      'servicios': servicios,
-      'calificacion': calificacion,
-      'usuario': usuario,
-      'partnerId': partnerId,
-      'edificioId': edificioId, // Opcional
+      'edificio': edificio.toJson(),
+      'servicio': servicio.map((s) => s.toJson()).toList(),
+      'especificacion': especificacion.map((e) => e.toJson()).toList(),
+      'tipo': tipo.toJson(),
+      'periodo': periodo.toJson(),
     };
   }
 }

@@ -5,10 +5,13 @@ class Config {
 
   // URL base del microservicio de edificios
   static const String baseUrlEdificio = 'http://10.0.2.2:8864/api/edificio'; // Emulador
+  static const String baseUrlEdificioImage = 'http://10.0.2.2:8864/img/jpg';
   // Para celular físico: 'http://169.254.81.182:8864/api/edificio'
 
   // URL base del microservicio de especificaciones
-  static const String baseUrlEspecificaciones = 'http://10.0.2.2:8866/especificacion'; // Emulador
+  static const String baseUrlEspecificaciones = 'http://10.0.2.2:8866/especificacion';
+  static const String baseUrlEspecificacionesImage = 'http://10.0.2.2:8866/img/jpg';
+// Emulador
   // Para celular físico: 'http://169.254.81.182:8866/especificacion'
 
   // URL base del microservicio de inmuebles
@@ -20,6 +23,8 @@ class Config {
 
   // URL base del microservicio de partners
   static const String baseUrlPartner = 'http://10.0.2.2:8867/partner'; // Emulador
+  static const String baseUrlPartnerImage = 'http://10.0.2.2:8862/img/jpg';
+
   // Para celular físico: 'http://169.254.81.182:8867/partner'
 
   // URL base del microservicio de reseñas

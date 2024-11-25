@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ustay_project/presentation/widgets/filter_dialog.dart'; // Asegúrate de importar el widget reutilizable para filtros.
+import 'package:ustay_project/presentation/widgets/large_card.dart';
+import 'package:ustay_project/presentation/widgets/filter_dialog.dart'; // Importa el widget reutilizable para el filtro.
 
 class InmuebleScreen extends StatefulWidget {
   @override
@@ -7,6 +8,34 @@ class InmuebleScreen extends StatefulWidget {
 }
 
 class _InmuebleScreenState extends State<InmuebleScreen> {
+  // Datos estáticos para las LargeCards
+  final List<Map<String, dynamic>> inmuebles = [
+    {
+      "imageUrl": "https://example.com/room_1.jpg",
+      "partnerName": "Partner 1",
+      "price": "250",
+      "type": "Habitación Deluxe",
+      "isAvailable": true,
+      "rating": 4.8,
+    },
+    {
+      "imageUrl": "https://example.com/room_2.jpg",
+      "partnerName": "Partner 2",
+      "price": "150",
+      "type": "Habitación Económica",
+      "isAvailable": true,
+      "rating": 4.5,
+    },
+    {
+      "imageUrl": "https://example.com/room_3.jpg",
+      "partnerName": "Partner 3",
+      "price": "180",
+      "type": "Habitación Popular",
+      "isAvailable": false,
+      "rating": 4.2,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,13 +75,28 @@ class _InmuebleScreenState extends State<InmuebleScreen> {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: ListView(
+              child: ListView.builder(
                 padding: const EdgeInsets.all(16),
-                children: [
-                  _buildPlaceholderCard(),
-                  const SizedBox(height: 16),
-                  _buildPlaceholderCard(),
-                ],
+                itemCount: inmuebles.length,
+                itemBuilder: (context, index) {
+                  final inmueble = inmuebles[index];
+                  return Column(
+                    children: [
+                      LargeCard(
+                        imageUrl: inmueble["imageUrl"] ?? "",
+                        partnerName: inmueble["partnerName"] ?? "Sin información",
+                        price: inmueble["price"] ?? "0.00",
+                        type: inmueble["type"] ?? "Sin descripción",
+                        isAvailable: inmueble["isAvailable"] ?? false,
+                        rating: inmueble["rating"] ?? 0.0,
+                        onTap: () {
+                          debugPrint("Inmueble seleccionado: ${inmueble["type"]}");
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                },
               ),
             ),
           ],
@@ -77,22 +121,6 @@ class _InmuebleScreenState extends State<InmuebleScreen> {
             fontWeight: FontWeight.normal,
             fontSize: 14,
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPlaceholderCard() {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Center(
-        child: Text(
-          "Aquí se pondrán las tarjetas de inmuebles.",
-          style: TextStyle(color: Colors.grey),
         ),
       ),
     );

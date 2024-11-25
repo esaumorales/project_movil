@@ -1,96 +1,44 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:ustay_project/core/utils/config.dart';
 import 'package:ustay_project/domain/entities/partner.dart';
 
-
 class PartnerService {
-  final String baseUrl = '${Config.baseUrlPartner}/partner-server';
+  final String baseUrl = Config.baseUrlPartner;
 
-  // Obtener todos los partners
-  Future<List<Partner>> getAllPartners() async {
-    final response = await http.get(Uri.parse('$baseUrl/lista'));
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body);
-      return data.map((json) => Partner.fromJson(json)).toList();
-    } else {
-      throw Exception('Error al cargar partners');
-    }
-  }
-
-  // Obtener partner por ID
-  Future<Partner> getPartnerById(int id) async {
-    final response = await http.get(Uri.parse('$baseUrl/id/$id'));
-
-    if (response.statusCode == 200) {
-      return Partner.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Partner no encontrado');
-    }
-  }
-
-  // Crear un nuevo partner
-  Future<String> createPartner(Partner partner) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/save'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(partner.toJson()),
-    );
-
-    if (response.statusCode == 201) {
-      return 'Partner guardado';
-    } else {
-      throw Exception('Error al crear partner');
-    }
-  }
-
-  // Actualizar un partner existente
-  Future<String> updatePartner(int id, Partner partner) async {
-    final response = await http.put(
-      Uri.parse('$baseUrl/update/$id'),
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode(partner.toJson()),
-    );
-
-    if (response.statusCode == 200) {
-      return 'Partner actualizado';
-    } else if (response.statusCode == 404) {
-      return 'No existe el partner';
-    } else {
-      throw Exception('Error al actualizar partner');
-    }
-  }
-
-  // Eliminar un partner por ID
-  Future<String> deletePartner(int id) async {
-    final response = await http.delete(Uri.parse('$baseUrl/delete/$id'));
-
-    if (response.statusCode == 200) {
-      return 'Partner eliminado';
-    } else if (response.statusCode == 404) {
-      return 'No existe el partner';
-    } else {
-      throw Exception('Error al eliminar partner');
-    }
-  }
-
-
-  Future<Map<String, dynamic>> fetchPartnerById(int partnerId) async {
+  /// Lista todos los partners
+  Future<List<Partner>> listarTodo() async {
     try {
-      final response = await http.get(Uri.parse('${Config.baseUrlPartner}/listar/$partnerId'));
-      debugPrint("Response partner ID $partnerId: ${response.body}");
+      final response = await http.get(Uri.parse('$baseUrl/listar-todo'));
 
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        final List<dynamic> data = json.decode(response.body);
+        return data.map((json) => Partner.fromJson(json)).toList();
+      } else if (response.statusCode == 404) {
+        throw Exception('No se encontraron partners');
       } else {
-        throw Exception("Error al obtener partner: ${response.statusCode}");
+        throw Exception('Error inesperado al listar partners: ${response.reasonPhrase}');
       }
     } catch (e) {
-      debugPrint("Error en fetchPartnerById: $e");
-      throw Exception("Error al conectar con el servicio de partner: $e");
+      throw Exception('Error de red al listar partners: $e');
     }
   }
 
+  /// Lista un partner por ID
+  Future<Partner> listarPorId(int id) async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/listar/$id'));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return Partner.fromJson(data);
+      } else if (response.statusCode == 404) {
+        throw Exception('El Partner con ID $id no existe');
+      } else {
+        throw Exception('Error inesperado al obtener el partner: ${response.reasonPhrase}');
+      }
+    } catch (e) {
+      throw Exception('Error de red al obtener el partner: $e');
+    }
+  }
 }

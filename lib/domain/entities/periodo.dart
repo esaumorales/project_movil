@@ -1,23 +1,23 @@
-class Tipo {
+class Periodo {
   final int id;
-  final String tipo;
+  final String descripcion;
 
-  Tipo({
+  Periodo({
     required this.id,
-    required this.tipo,
+    required this.descripcion,
   });
 
-  factory Tipo.fromJson(Map<String, dynamic> json) {
-    return Tipo(
+  factory Periodo.fromJson(Map<String, dynamic> json) {
+    return Periodo(
       id: json['id'],
-      tipo: json['tipo'],
+      descripcion: json['descripcion'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'tipo': tipo,
+      'descripcion': descripcion,
     };
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ustay_project/core/widgets/custom_button.dart'; // Widget para botones personalizados
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ustay_project/core/widgets/custom_button.dart';
 import 'package:ustay_project/core/widgets/custom_social_media.dart';
 import 'package:ustay_project/data/auth_service.dart';
 import 'package:ustay_project/domain/entities/user.dart';
@@ -49,9 +50,22 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
+      // Autenticar al usuario
       Usuario? user = await _authService.login(email, password);
+
       if (user != null) {
-        Navigator.pushNamed(context, '/userDashboard', arguments: user);
+        // Determinar el rol basándonos en la conexión con el Partner
+        final String rol = (user.partners != null && user.partners!.isNotEmpty) ? 'Partner' : 'Usuario';
+
+        // Guardar los datos relevantes del usuario en SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('userId', user.idUsuario ?? 0);
+        await prefs.setString('nombre', user.nombre ?? 'Sin nombre');
+        await prefs.setString('rol', rol);
+        await prefs.setString('correo', user.correo);
+
+        // Redirigir al dashboard
+        Navigator.pushNamed(context, '/userDashboard');
       }
     } catch (e) {
       setState(() {
@@ -136,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             // Implementar lógica para "Recordar inicio de sesión"
                           },
                         ),
-                       // const Text('Recordar inicio de sesión'),
+                        // const Text('Recordar inicio de sesión'),
                       ],
                     ),
                     GestureDetector(

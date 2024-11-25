@@ -4,38 +4,51 @@ import 'package:ustay_project/core/utils/config.dart';
 import 'package:ustay_project/domain/entities/inmueble.dart';
 
 class InmuebleService {
+  final String baseUrl = Config.baseUrlInmueble;
 
-  Future<List<Inmueble>> fetchInmuebles() async {
-    final response = await http.get(Uri.parse('${Config.baseUrlInmueble}/listar'));
+  /// Lista todos los inmuebles disponibles
+  Future<List<Inmueble>> listarTodo() async {
+    final response = await http.get(Uri.parse('$baseUrl/listar-todo'));
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body) as List;
+      final List<dynamic> data = json.decode(response.body);
       return data.map((json) => Inmueble.fromJson(json)).toList();
     } else {
-      throw Exception('Error al cargar los inmuebles');
+      throw Exception('Error al listar inmuebles: ${response.reasonPhrase}');
     }
   }
-  Future<Inmueble> fetchInmuebleById(int id) async {
-    final response = await http.get(Uri.parse('${Config.baseUrlInmueble}/listar/$id'));
+
+  /// Lista un inmueble por ID
+  Future<Inmueble> listarPorId(int id) async {
+    final response = await http.get(Uri.parse('$baseUrl/listar/$id'));
     if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
+      final data = json.decode(response.body);
       return Inmueble.fromJson(data);
     } else {
-      throw Exception('Error al cargar el inmueble');
-    }
-  }
-  Future<List<Map<String, dynamic>>> fetchInmuebleDetalles() async {
-    try {
-      final response = await http.get(Uri.parse('${Config.baseUrlInmueble}/detalle'));
-
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
-        return data.map((json) => json as Map<String, dynamic>).toList();
-      } else {
-        throw Exception('Error al cargar detalles de los inmuebles: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Error al conectar con el servicio de inmuebles: $e');
+      throw Exception('Error al obtener inmueble: ${response.reasonPhrase}');
     }
   }
 
+  /// Guarda un nuevo inmueble
+  Future<void> guardar(Inmueble inmueble) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/save'),
+      body: json.encode({
+        "descripcion": inmueble.descripcion,
+        "disponibilidad": inmueble.disponibilidad,
+        "precio": inmueble.precio,
+        "n_cuarto": inmueble.nCuarto,
+        "ilove": inmueble.ilove,
+        "edificio": inmueble.edificio,
+        "servicio": inmueble.servicio,
+        "especificacion": inmueble.especificacion,
+        "tipo": inmueble.tipo,
+        "periodo": inmueble.periodo,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode != 201) {
+      throw Exception('Error al guardar inmueble: ${response.reasonPhrase}');
+    }
+  }
 }

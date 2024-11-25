@@ -1,9 +1,9 @@
-// user_favorite_screen.dart
 import 'package:flutter/material.dart';
 import 'package:ustay_project/core/utils/navigation_utils.dart';
 import 'package:ustay_project/core/widgets/custom_footer.dart';
 import 'package:ustay_project/presentation/user/screens/user_dashboard_screen.dart';
 import 'package:ustay_project/presentation/user/screens/user_person_screen.dart';
+import 'package:ustay_project/presentation/widgets/large_card.dart';
 import 'package:ustay_project/presentation/widgets/filter_dialog.dart';
 
 class UserFavoriteScreen extends StatefulWidget {
@@ -12,21 +12,45 @@ class UserFavoriteScreen extends StatefulWidget {
 }
 
 class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
-  int _currentIndex = 1; // Posición de "Favoritos" en el footer
+  int _currentIndex = 1;
+
+  // Lista de inmuebles favoritos (con datos ficticios realistas)
+  final List<Map<String, dynamic>> favoriteInmuebles = [
+    {
+      "imageUrl": "https://example.com/room_14.jpg",
+      "partnerName": "Residencial Sunset",
+      "price": "250",
+      "type": "Suite Premium",
+      "isAvailable": true,
+      "rating": 4.9,
+      "isFavorite": true,
+    },
+    {
+      "imageUrl": "https://example.com/room_15.jpg",
+      "partnerName": "Hotel Primavera",
+      "price": "180",
+      "type": "Habitación Estándar",
+      "isAvailable": false,
+      "rating": 4.6,
+      "isFavorite": true,
+    },
+    {
+      "imageUrl": "https://example.com/room_16.jpg",
+      "partnerName": "Hostal La Paz",
+      "price": "120",
+      "type": "Habitación Económica",
+      "isAvailable": true,
+      "rating": 4.3,
+      "isFavorite": true,
+    },
+  ];
 
   void _onIconTap(int index) {
     setState(() {
       _currentIndex = index;
     });
 
-    // Navega según el índice seleccionado
     switch (index) {
-//      case 0:
-// navigateWithoutAnimation(context, UserNavigatorScreen());
-//                break;
-//      case 1:
-//        navigateWithoutAnimation(context, UserBagScreen());
-//        break;
       case 0:
         navigateWithoutAnimation(context, UserDashboardScreen());
         break;
@@ -38,7 +62,6 @@ class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
         break;
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +79,7 @@ class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
                 IconButton(
                   icon: const Icon(Icons.arrow_back, color: Colors.black),
                   onPressed: () {
-                    Navigator.pushNamed(context, '/nonUserDashboard');
+                    Navigator.pushNamed(context, '/userDashboard');
                   },
                 ),
                 Row(
@@ -70,17 +93,11 @@ class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
                         fontSize: 20,
                       ),
                     ),
-                    Row(
-                      children: [
-                        _buildFilterButton("Seleccionar", onPressed: () {}),
-                        const SizedBox(width: 8),
-                        _buildFilterButton(
-                          "Filtro",
-                          onPressed: () {
-                            _showFilterBottomSheet(context);
-                          },
-                        ),
-                      ],
+                    _buildFilterButton(
+                      "Filtro",
+                      onPressed: () {
+                        _showFilterBottomSheet(context);
+                      },
                     ),
                   ],
                 ),
@@ -90,12 +107,42 @@ class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            _buildFavoriteCardPlaceholder(),
-            const SizedBox(height: 16),
-            _buildFavoriteCardPlaceholder(),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Column(
+            children: favoriteInmuebles.map((inmueble) {
+              return Column(
+                children: [
+                  Stack(
+                    children: [
+                      LargeCard(
+                        imageUrl: inmueble["imageUrl"] ?? "",
+                        partnerName: inmueble["partnerName"] ?? "Sin información",
+                        price: inmueble["price"] ?? "0.00",
+                        type: inmueble["type"] ?? "Sin descripción",
+                        isAvailable: inmueble["isAvailable"] ?? false,
+                        rating: inmueble["rating"] ?? 0.0,
+                        onTap: () {
+                          debugPrint("Inmueble seleccionado: ${inmueble["type"]}");
+                        },
+                      ),
+                      // Ícono de corazón rojo en la esquina superior derecha
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: Icon(
+                          Icons.favorite,
+                          color: inmueble["isFavorite"] ? Colors.red : Colors.grey,
+                          size: 24,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              );
+            }).toList(),
+          ),
         ),
       ),
       bottomNavigationBar: CustomFooter(
@@ -112,7 +159,7 @@ class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.orange, width: 2),
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Text(
           text,
@@ -126,43 +173,25 @@ class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
     );
   }
 
-  Widget _buildFavoriteCardPlaceholder() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Center(
-        child: Text(
-          "Aquí se pondrán las tarjetas de favoritos.",
-          style: TextStyle(color: Colors.grey),
-        ),
-      ),
-    );
-  }
-
   void _showFilterBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      isScrollControlled: true, // Permite que el BottomSheet sea responsivo
-      shape: RoundedRectangleBorder(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(0),
+          top: Radius.circular(20),
         ),
       ),
       builder: (context) {
         return FractionallySizedBox(
-          heightFactor: 0.7, // Ocupa el 70% de la pantalla (ajústalo según necesidad)
+          heightFactor: 0.7,
           child: FilterWidget(
             onClose: () {
-              Navigator.pop(context); // Cierra el BottomSheet
+              Navigator.pop(context);
             },
           ),
         );
       },
     );
   }
-
 }

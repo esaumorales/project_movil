@@ -15,6 +15,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _fecharegistroController = TextEditingController();
 
   final AuthService _authService = AuthService(); // Instancia de AuthService
   bool _isLoading = false; // Estado de carga
@@ -25,6 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     String name = _nameController.text.trim();
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
+    String fecharegistro = _fecharegistroController.text.trim();
     String confirmPassword = _confirmPasswordController.text.trim();
 
     // Validación básica
@@ -51,6 +53,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         nombre: name,
         correo: email,
         contrasena: password,
+        fechaRegistro:  fecharegistro,
       );
 
       await _authService.register(newUser); // Llamada al servicio de registro

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ustay_project/presentation/widgets/filter_dialog.dart';
+import 'package:ustay_project/presentation/widgets/large_card.dart';
 
 class PricesScreen extends StatefulWidget {
   @override
@@ -7,6 +8,42 @@ class PricesScreen extends StatefulWidget {
 }
 
 class _PricesScreenState extends State<PricesScreen> {
+  // Datos realistas para los mejores precios
+  final List<Map<String, dynamic>> bestPriceInmuebles = [
+    {
+      "imageUrl": "https://example.com/room_10.jpg",
+      "partnerName": "Residencial Miraflores",
+      "price": "120",
+      "type": "Habitación Básica",
+      "isAvailable": true,
+      "rating": 4.4,
+    },
+    {
+      "imageUrl": "https://example.com/room_11.jpg",
+      "partnerName": "Hostal La Esperanza",
+      "price": "100",
+      "type": "Habitación Simple",
+      "isAvailable": false,
+      "rating": 4.3,
+    },
+    {
+      "imageUrl": "https://example.com/room_12.jpg",
+      "partnerName": "Hotel El Prado",
+      "price": "150",
+      "type": "Habitación Doble",
+      "isAvailable": true,
+      "rating": 4.6,
+    },
+    {
+      "imageUrl": "https://example.com/room_13.jpg",
+      "partnerName": "Hospedaje El Sol",
+      "price": "110",
+      "type": "Suite Económica",
+      "isAvailable": true,
+      "rating": 4.5,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,13 +83,29 @@ class _PricesScreenState extends State<PricesScreen> {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: ListView(
+              child: ListView.builder(
                 padding: const EdgeInsets.all(16),
-                children: [
-                  _buildPlaceholderCard(),
-                  const SizedBox(height: 16),
-                  _buildPlaceholderCard(),
-                ],
+                itemCount: bestPriceInmuebles.length,
+                itemBuilder: (context, index) {
+                  final inmueble = bestPriceInmuebles[index];
+                  return Column(
+                    children: [
+                      LargeCard(
+                        imageUrl: inmueble["imageUrl"] ?? "",
+                        partnerName: inmueble["partnerName"] ?? "Sin información",
+                        price: inmueble["price"] ?? "0.00",
+                        type: inmueble["type"] ?? "Sin descripción",
+                        isAvailable: inmueble["isAvailable"] ?? false,
+                        rating: inmueble["rating"] ?? 0.0,
+                        onTap: () {
+                          debugPrint(
+                              "Inmueble seleccionado: ${inmueble["type"]}");
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                },
               ),
             ),
           ],
@@ -77,22 +130,6 @@ class _PricesScreenState extends State<PricesScreen> {
             fontWeight: FontWeight.normal,
             fontSize: 14,
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPlaceholderCard() {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Center(
-        child: Text(
-          "Aquí se pondrán las tarjetas de mejores precios.",
-          style: TextStyle(color: Colors.grey),
         ),
       ),
     );

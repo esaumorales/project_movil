@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ustay_project/presentation/widgets/filter_dialog.dart';
+import 'package:ustay_project/presentation/widgets/large_card.dart';
 
 class PopularScreen extends StatefulWidget {
   @override
@@ -7,6 +8,42 @@ class PopularScreen extends StatefulWidget {
 }
 
 class _PopularScreenState extends State<PopularScreen> {
+  // Datos realistas para las tarjetas de populares
+  final List<Map<String, dynamic>> popularInmuebles = [
+    {
+      "imageUrl": "https://example.com/room_1.jpg",
+      "partnerName": "Hotel Central",
+      "price": "300",
+      "type": "Suite Deluxe",
+      "isAvailable": true,
+      "rating": 4.9,
+    },
+    {
+      "imageUrl": "https://example.com/room_2.jpg",
+      "partnerName": "Residencial Primavera",
+      "price": "250",
+      "type": "Habitación Doble",
+      "isAvailable": true,
+      "rating": 4.8,
+    },
+    {
+      "imageUrl": "https://example.com/room_3.jpg",
+      "partnerName": "Hostal El Sol",
+      "price": "200",
+      "type": "Habitación Simple",
+      "isAvailable": false,
+      "rating": 4.7,
+    },
+    {
+      "imageUrl": "https://example.com/room_4.jpg",
+      "partnerName": "Hotel Urbano",
+      "price": "350",
+      "type": "Suite Presidencial",
+      "isAvailable": true,
+      "rating": 5.0,
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +75,7 @@ class _PopularScreenState extends State<PopularScreen> {
                   _buildFilterButton(
                     "Filtro",
                     onPressed: () {
-                      _showFilterBottomSheet(context);
+                      _showFilterBottomSheet(context); // Muestra el filtro
                     },
                   ),
                 ],
@@ -46,13 +83,29 @@ class _PopularScreenState extends State<PopularScreen> {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: ListView(
+              child: ListView.builder(
                 padding: const EdgeInsets.all(16),
-                children: [
-                  _buildPlaceholderCard(),
-                  const SizedBox(height: 16),
-                  _buildPlaceholderCard(),
-                ],
+                itemCount: popularInmuebles.length,
+                itemBuilder: (context, index) {
+                  final inmueble = popularInmuebles[index];
+                  return Column(
+                    children: [
+                      LargeCard(
+                        imageUrl: inmueble["imageUrl"] ?? "",
+                        partnerName: inmueble["partnerName"] ?? "Sin información",
+                        price: inmueble["price"] ?? "0.00",
+                        type: inmueble["type"] ?? "Sin descripción",
+                        isAvailable: inmueble["isAvailable"] ?? false,
+                        rating: inmueble["rating"] ?? 0.0,
+                        onTap: () {
+                          debugPrint(
+                              "Inmueble seleccionado: ${inmueble["type"]}");
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                    ],
+                  );
+                },
               ),
             ),
           ],
@@ -82,22 +135,6 @@ class _PopularScreenState extends State<PopularScreen> {
     );
   }
 
-  Widget _buildPlaceholderCard() {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: const Center(
-        child: Text(
-          "Aquí se pondrán las tarjetas de los más populares.",
-          style: TextStyle(color: Colors.grey),
-        ),
-      ),
-    );
-  }
-
   void _showFilterBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -109,7 +146,7 @@ class _PopularScreenState extends State<PopularScreen> {
       ),
       builder: (context) {
         return FractionallySizedBox(
-          heightFactor: 0.7,
+          heightFactor: 0.7, // Ajusta el tamaño del modal
           child: FilterWidget(
             onClose: () {
               Navigator.pop(context);
