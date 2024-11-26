@@ -1,8 +1,8 @@
-import 'package:ustay_project/domain/entities/edificio.dart';
-import 'package:ustay_project/domain/entities/especificacion.dart';
-import 'package:ustay_project/domain/entities/periodo.dart';
-import 'package:ustay_project/domain/entities/servicio.dart';
-import 'package:ustay_project/domain/entities/tipo.dart';
+import 'package:ustay_project/domain/edificio/edificio.dart';
+import 'package:ustay_project/domain/service/especificacion.dart';
+import 'package:ustay_project/domain/service/periodo.dart';
+import 'package:ustay_project/domain/service/servicio.dart';
+import 'package:ustay_project/domain/service/tipo.dart';
 
 class Inmueble {
   final int id;

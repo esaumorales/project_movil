@@ -16,7 +16,10 @@ dependencies:
 
   flutter:
     sdk: flutter
+  #Pensando en cambiar
   http: ^1.2.2
+  #Nueva Conexion
+  dio: ^5.3.2
   xml: ^6.1.0
   collection: ^1.18.0
   http_parser: ^4.0.2

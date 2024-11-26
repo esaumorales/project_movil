@@ -1,70 +1,57 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:ustay_project/core/utils/config.dart';
 import 'package:ustay_project/domain/entities/user.dart';
 
 class UsuarioService {
-  final String baseUrl = Config.baseUrlUsuario; // Define esto en tu archivo Config
+  final Dio _dio = Dio(BaseOptions(baseUrl: Config.baseUrlUsuario));
 
   /// Obtiene todos los usuarios
   Future<List<Usuario>> listarTodo() async {
-    final response = await http.get(Uri.parse('$baseUrl/lista'));
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      return data.map((json) => Usuario.fromJson(json)).toList();
-    } else if (response.statusCode == 204) {
-      // Cuando no hay contenido
-      return [];
-    } else {
-      throw Exception('Error al listar usuarios: ${response.reasonPhrase}');
+    try {
+      final response = await _dio.get('/lista');
+      return (response.data as List).map((json) => Usuario.fromJson(json)).toList();
+    } catch (e) {
+      throw Exception('Error al listar usuarios: $e');
     }
   }
 
   /// Obtiene un usuario por ID
   Future<Usuario> listarPorId(int id) async {
-    final response = await http.get(Uri.parse('$baseUrl/id/$id'));
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      return Usuario.fromJson(data);
-    } else if (response.statusCode == 404) {
-      throw Exception('Usuario no encontrado.');
-    } else {
-      throw Exception('Error al obtener usuario: ${response.reasonPhrase}');
+    try {
+      final response = await _dio.get('/id/$id');
+      return Usuario.fromJson(response.data);
+    } catch (e) {
+      if (e is DioError && e.response?.statusCode == 404) {
+        throw Exception('Usuario no encontrado.');
+      }
+      throw Exception('Error al obtener usuario: $e');
     }
   }
 
   /// Guarda un nuevo usuario
   Future<void> guardar(Usuario usuario) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/save'),
-      body: json.encode(usuario.toJson()),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    if (response.statusCode != 201) {
-      throw Exception('Error al guardar usuario: ${response.reasonPhrase}');
+    try {
+      await _dio.post('/save', data: usuario.toJson());
+    } catch (e) {
+      throw Exception('Error al guardar usuario: $e');
     }
   }
 
   /// Actualiza un usuario existente
   Future<void> actualizar(int id, Usuario usuario) async {
-    final response = await http.put(
-      Uri.parse('$baseUrl/update/$id'),
-      body: json.encode(usuario.toJson()),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Error al actualizar usuario: ${response.reasonPhrase}');
+    try {
+      await _dio.put('/update/$id', data: usuario.toJson());
+    } catch (e) {
+      throw Exception('Error al actualizar usuario: $e');
     }
   }
 
   /// Elimina un usuario por ID
   Future<void> eliminar(int id) async {
-    final response = await http.delete(Uri.parse('$baseUrl/delete/$id'));
-
-    if (response.statusCode != 200) {
-      throw Exception('Error al eliminar usuario: ${response.reasonPhrase}');
+    try {
+      await _dio.delete('/delete/$id');
+    } catch (e) {
+      throw Exception('Error al eliminar usuario: $e');
     }
   }
 }

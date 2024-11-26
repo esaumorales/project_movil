@@ -1,4 +1,4 @@
-import 'package:ustay_project/domain/entities/edificio.dart';
+import 'package:ustay_project/domain/edificio/edificio.dart';
 import 'package:ustay_project/domain/entities/user.dart';
 
 class Partner {

@@ -1,6 +1,6 @@
-import 'package:ustay_project/domain/entities/inmueble.dart';
+import 'package:ustay_project/domain/cuartos/inmueble.dart';
 import 'package:ustay_project/domain/entities/partner.dart';
-import 'package:ustay_project/domain/entities/zona.dart';
+import 'package:ustay_project/domain/cuartos/zona.dart';
 
 class Edificio {
   final int idEdificio;

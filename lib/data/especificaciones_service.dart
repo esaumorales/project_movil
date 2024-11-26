@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:ustay_project/core/utils/config.dart';
-import 'package:ustay_project/domain/entities/especificacion.dart';
+import 'package:ustay_project/domain/service/especificacion.dart';
 
 class EspecificacionesService {
   final String baseUrl = Config.baseUrlEspecificaciones;

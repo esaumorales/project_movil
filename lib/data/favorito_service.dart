@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'package:ustay_project/core/utils/config.dart';
-import 'package:ustay_project/domain/entities/inmueble.dart';
+import 'package:ustay_project/domain/cuartos/inmueble.dart';
 
 class FavoritoService {
   Future<List<Inmueble>> fetchFavoritos() async {

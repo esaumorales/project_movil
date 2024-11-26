@@ -1,6 +1,6 @@
-import 'package:ustay_project/domain/entities/favoritos.dart';
+import 'package:ustay_project/domain/service/favoritos.dart';
 import 'package:ustay_project/domain/entities/partner.dart';
-import 'package:ustay_project/domain/entities/resena.dart';
+import 'package:ustay_project/domain/service/resena.dart';
 
 class Usuario {
   final int? idUsuario;
