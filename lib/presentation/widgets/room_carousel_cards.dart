@@ -72,7 +72,7 @@ class _RoomCarouselWithCardsState extends State<RoomCarouselWithCards> {
               fit: BoxFit.cover, // Hace que la imagen se adapte al contenedor
               errorBuilder: (context, error, stackTrace) {
                 return Image.asset(
-                  'assets/images/common/room_placeholder.png',
+                  'assets/images/common/cards/card5.jpg',
                   height: 160,
                   width: double.infinity,
                   fit: BoxFit.cover,

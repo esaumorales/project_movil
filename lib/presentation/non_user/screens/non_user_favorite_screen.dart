@@ -128,7 +128,7 @@ class _NonUserFavoriteScreenState extends State<NonUserFavoriteScreen> {
       ),
       child: const Center(
         child: Text(
-          "Aquí se pondrán las tarjetas de favoritos.",
+          "Inicia Sesión para poder colocar tus cuartos Favoritos.",
           style: TextStyle(color: Colors.grey),
         ),
       ),

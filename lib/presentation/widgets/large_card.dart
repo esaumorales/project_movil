@@ -36,11 +36,11 @@ class LargeCard extends StatelessWidget {
               borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
               child: Image.network(
                 imageUrl,
-                height: 150,
+                height: 160,
                 width: double.infinity,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
-                  return Image.asset('assets/images/common/room_placeholder.png');
+                  return Image.asset('assets/images/common/cards/card10.jpg');
                 },
               ),
             ),

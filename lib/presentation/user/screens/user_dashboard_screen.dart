@@ -32,7 +32,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
       "price": "S/150",
       "partnerName": "Juan P.",
       "description": "Zona tranquila",
-      "imageUrl": "https://example.com/room_2.jpg",
+      "imageUrl": "'assets/images/common/cards/card1.png'",
       "rating": 4.5,
       "services": [Icons.home, Icons.kitchen, Icons.pool],
     },
@@ -41,7 +41,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
       "price": "S/220",
       "partnerName": "Olimpio R.",
       "description": "Cerca al centro",
-      "imageUrl": "https://example.com/room_1.jpg",
+      "imageUrl": "'assets/images/common/cards/card5.png'",
       "rating": 4.8,
       "services": [Icons.local_laundry_service, Icons.tv, Icons.wifi],
     },
@@ -92,7 +92,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
       "title": "Habitación Económica 2",
       "price": "S/130",
       "partnerName": "Socio 4",
-      "imageUrl": "https://example.com/room_8.jpg",
+      "imageUrl": "assets/images/common/cards/card3.jpg",
       "rating": 4.3,
     },
   ];
@@ -201,7 +201,7 @@ class _UserDashboardScreenState extends State<UserDashboardScreen> {
           price: room["price"] ?? "S/0.00",
           partnerName: room["partnerName"] ?? "Sin partner",
           rating: room["rating"] ?? 0.0,
-          imageUrl: room["imageUrl"] ?? 'assets/images/common/room_placeholder.png',
+          imageUrl: room["imageUrl"] ?? 'assets/images/common/cards/cards2.jpg',
           onTap: () {
             debugPrint("Habitación seleccionada: ${room["title"]}");
           },

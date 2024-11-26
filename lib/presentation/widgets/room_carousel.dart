@@ -52,7 +52,7 @@ class _RoomCarouselState extends State<RoomCarousel> {
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
                     return Image.asset(
-                      'assets/images/common/room_placeholder.png',
+                      'assets/images/common/cards/card1.jpg',
                       fit: BoxFit.cover,
                     );
                   },
@@ -83,9 +83,9 @@ class _RoomCarouselState extends State<RoomCarousel> {
           onPressed: () {
             // Ejemplo de actualización dinámica de imágenes
             updateImages([
-              'https://example.com/new_image_1.jpg',
-              'https://example.com/new_image_2.jpg',
-              'https://example.com/new_image_3.jpg',
+              'assets/images/common/cards/card1.jpg',
+              'assets/images/common/cards/card3.jpg',
+              'assets/images/common/cards/card5.jpg',
             ]);
           },
           child: const Text('Actualizar Imágenes'),

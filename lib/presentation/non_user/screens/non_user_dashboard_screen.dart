@@ -22,7 +22,7 @@ class _NonUserDashboardScreenState extends State<NonUserDashboardScreen> {
       "price": "S/250",
       "partnerName": "Juan Perez",
       "description": "Cerca al centro",
-      "imageUrl": "https://example.com/room_1.jpg",
+      "imageUrl": "assets/images/common/cards/card11.jpg",
       "rating": 4.8,
       "services": [Icons.local_laundry_service, Icons.tv, Icons.wifi],
     },
@@ -205,7 +205,7 @@ class _NonUserDashboardScreenState extends State<NonUserDashboardScreen> {
           price: room["price"] ?? "S/0.00",
           partnerName: room["partnerName"] ?? "Sin partner",
           rating: 4.5,
-          imageUrl: room["imageUrl"] ?? 'assets/images/common/room_placeholder.png',
+          imageUrl: room["imageUrl"] ?? 'assets/images/common/cards/card6.jpg',
           onTap: () {
             debugPrint("Habitación seleccionada: ${room["title"]}");
           },

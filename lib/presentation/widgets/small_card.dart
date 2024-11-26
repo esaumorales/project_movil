@@ -30,7 +30,7 @@ class SmallCard extends StatelessWidget {
         ),
         elevation: 3,
         child: Container(
-          width: 160, // Reduce el ancho para un diseño más compacto
+          width: 164, // Reduce el ancho para un diseño más compacto
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -43,7 +43,7 @@ class SmallCard extends StatelessWidget {
                   width: double.infinity,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                    return Image.asset('assets/images/common/room_placeholder.png');
+                    return Image.asset('assets/images/common/cards/card8.jpg');
                   },
                 ),
               ),
