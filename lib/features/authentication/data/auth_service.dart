@@ -24,7 +24,6 @@ class AuthService {
         throw Exception('Error al iniciar sesión. Código: ${response.statusCode}');
       }
     } on DioException catch (e) {
-      // Manejo detallado de errores de Dio
       if (e.response?.statusCode == 401) {
         throw Exception('Credenciales incorrectas. Verifica tu correo y contraseña.');
       } else {
@@ -32,6 +31,30 @@ class AuthService {
       }
     }
   }
+
+
+
+  Future<bool> verify(String correo, String contrasena) async {
+    try {
+      final response = await _dio.post(
+        '/verify',
+        data: {
+          'correo': correo,
+          'contrasena': contrasena,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        // Devuelve el valor booleano directamente
+        return response.data as bool;
+      } else {
+        throw Exception('Error al verificar credenciales. Código: ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      throw Exception('Error en el servidor: ${e.response?.data ?? e.message}');
+    }
+  }
+
 
   /// Método para registrar un nuevo usuario
   Future<void> register(Usuario usuario) async {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ustay_project/shared/button/custom_button.dart'; // Botón reutilizable
+import 'package:ustay_project/features/authentication/controller/auth_controller.dart';
+import 'package:ustay_project/shared/button/custom_button.dart';
 import 'package:ustay_project/domain/models/user.dart';
-import 'package:ustay_project/features/authentication/data/auth_service.dart';
 import 'package:ustay_project/shared/widgets/custom_social_media.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -14,15 +15,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
   final TextEditingController _fecharegistroController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
-  final AuthService _authService = AuthService(); // Instancia de AuthService
-  bool _isLoading = false; // Estado de carga
-  int _currentStep = 1; // Controla el paso actual
+  bool _isLoading = false;
+  int _currentStep = 1;
 
   // Método para registrar usuario
-  Future<void> _register() async {
+  void _register() {
     String name = _nameController.text.trim();
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
@@ -48,30 +48,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
       _isLoading = true;
     });
 
-    try {
-      Usuario newUser = Usuario(
-        nombre: name,
-        correo: email,
-        contrasena: password,
-        fechaRegistro:  fecharegistro,
-      );
+    // Crear el objeto Usuario
+    Usuario newUser = Usuario(
+      nombre: name,
+      correo: email,
+      contrasena: password,
+      fechaRegistro: fecharegistro, // Asumiendo que se requiere este parámetro
+    );
 
-      await _authService.register(newUser); // Llamada al servicio de registro
+    // Usar el AuthController para registrar al usuario
+    final authController = context.read<AuthController>();
 
-      // Muestra la animación de agradecimiento
+    authController.register(newUser).then((_) {
       _showThankYouAnimation();
-    } catch (e) {
+    }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${e.toString()}")),
+        SnackBar(content: Text("Error: ${error.toString()}")),
       );
-    } finally {
+    }).whenComplete(() {
       setState(() {
         _isLoading = false;
       });
-    }
+    });
   }
 
-  // Muestra la animación de agradecimiento con efecto especial
   void _showThankYouAnimation() {
     showDialog(
       context: context,
@@ -81,11 +81,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              // Fondo oscuro con opacidad
               Container(
                 color: Colors.black.withOpacity(0.6),
               ),
-              // Animación de entrada especial
               TweenAnimationBuilder(
                 tween: Tween<double>(begin: 0.0, end: 1.0),
                 duration: const Duration(seconds: 2),
@@ -151,10 +149,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       },
     );
 
-    // Después de 2.5 segundos, redirigir a la página principal
     Future.delayed(const Duration(seconds: 2, milliseconds: 500), () {
-      Navigator.pop(context); // Cierra el diálogo
-      Navigator.pushReplacementNamed(context, '/userDashboard'); // Redirige a la página principal
+      Navigator.pop(context);
+      Navigator.pushReplacementNamed(context, '/userDashboard');
     });
   }
 
@@ -177,15 +174,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                // Logo
                 Image.asset(
                   'assets/images/common/app-logo.png',
                   height: 160,
                   width: 160,
                 ),
                 const SizedBox(height: 20),
-
-                // Título
                 Text(
                   "Ingrese sus credenciales",
                   style: GoogleFonts.kadwa(
@@ -194,16 +188,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-
-                // Contenido del paso actual
                 if (_currentStep == 1)
                   _buildStepOne()
                 else
                   _buildStepTwo(),
-
                 const SizedBox(height: 20),
-
-                // Botones de acción
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -229,15 +218,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             _currentStep = 2;
                           });
                         }
-                            : _register, // Llama al método _register en el paso 2
+                            : _register,
                         isLoading: _isLoading,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(height: 20),
-
-                // Redes sociales (solo en el paso 1)
                 if (_currentStep == 1)
                   Column(
                     children: [
@@ -267,17 +254,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         iconPath: "assets/images/common/google-logo.png",
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("Google seleccionado")),
+                            const SnackBar(content: Text("Google login")),
                           );
                         },
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 20),
                       SocialMediaButton(
                         text: "Continuar con Facebook",
                         iconPath: "assets/images/common/facebook-logo.png",
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text("Facebook seleccionado")),
+                            const SnackBar(content: Text("Google login")),
                           );
                         },
                       ),
@@ -291,39 +278,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  // Paso 1: Nombre y Correo
   Widget _buildStepOne() {
     return Column(
       children: [
-        _buildTextField("Nombre", _nameController),
-        const SizedBox(height: 15),
-        _buildTextField("Correo", _emailController),
+        TextField(
+          controller: _nameController,
+          decoration: InputDecoration(labelText: 'Nombre completo'),
+        ),
+        const SizedBox(height: 20),
+        TextField(
+          controller: _emailController,
+          decoration: InputDecoration(labelText: 'Correo electrónico'),
+        ),
+        const SizedBox(height: 20),
       ],
     );
   }
 
-  // Paso 2: Contraseña y Confirmación
   Widget _buildStepTwo() {
     return Column(
       children: [
-        _buildTextField("Contraseña", _passwordController, obscureText: true),
-        const SizedBox(height: 15),
-        _buildTextField("Repita contraseña", _confirmPasswordController, obscureText: true),
-      ],
-    );
-  }
-
-  // Campo de texto reutilizable
-  Widget _buildTextField(String label, TextEditingController controller, {bool obscureText = false}) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+        TextField(
+          controller: _passwordController,
+          obscureText: true,
+          decoration: InputDecoration(labelText: 'Contraseña'),
         ),
-      ),
+        const SizedBox(height: 20),
+        TextField(
+          controller: _confirmPasswordController,
+          obscureText: true,
+          decoration: InputDecoration(labelText: 'Confirmar Contraseña'),
+        ),
+        const SizedBox(height: 20),
+      ],
     );
   }
 }

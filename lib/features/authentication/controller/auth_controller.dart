@@ -58,7 +58,55 @@ class AuthController with ChangeNotifier {
     }
   }
 
-  // Método para verificar autenticación inicial
+  // Método para verificar credenciales con `/verify`
+  Future<bool> verify(String email, String password) async {
+    _setLoading(true);
+    _setErrorMessage('');
+
+    if (email.isEmpty || password.isEmpty) {
+      _setErrorMessage('Por favor ingresa correo y contraseña');
+      _setLoading(false);
+      return false;
+    }
+
+    if (!_isValidEmail(email)) {
+      _setErrorMessage('Por favor ingresa un correo válido');
+      _setLoading(false);
+      return false;
+    }
+
+    try {
+      final bool isValid = await _authService.verify(email, password);
+      _isAuthenticated = isValid;
+      return isValid;
+    } catch (e) {
+      _setErrorMessage(e.toString());
+      return false;
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // Método para registrar un nuevo usuario
+  Future<void> register(Usuario newUser) async {
+    _setLoading(true);
+    _setErrorMessage('');
+
+    try {
+      await _authService.register(newUser); // Llamada al servicio de registro
+
+      // Si el registro es exitoso, también podemos hacer algo adicional, como redirigir
+      // al usuario a otra pantalla o guardar la información en SharedPreferences
+      _isAuthenticated = true;
+      notifyListeners();
+    } catch (e) {
+      _setErrorMessage('Error: ${e.toString()}');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  // Método para verificar autenticación inicial desde SharedPreferences
   Future<void> checkAuthentication() async {
     final prefs = await SharedPreferences.getInstance();
     _isAuthenticated = prefs.getInt('userId') != null;
@@ -70,6 +118,7 @@ class AuthController with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     _isAuthenticated = false;
+    _currentUser = null;
     notifyListeners();
   }
 

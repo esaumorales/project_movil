@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ustay_project/shared/button/custom_button.dart';
+import 'package:provider/provider.dart';
 import 'package:ustay_project/features/authentication/controller/auth_controller.dart';
+import 'package:ustay_project/shared/button/custom_button.dart';
 import 'package:ustay_project/shared/widgets/custom_social_media.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -29,11 +34,14 @@ class LoginScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Logo
                 Image.asset(
                   'assets/images/common/app-logo.png',
                   height: 150,
                 ),
                 const SizedBox(height: 20),
+
+                // Título
                 Text(
                   'Ingrese sus credenciales',
                   style: GoogleFonts.kadwa(
@@ -42,6 +50,8 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20),
+
+                // Campo de correo
                 TextField(
                   controller: _emailController,
                   decoration: InputDecoration(
@@ -52,6 +62,8 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 15),
+
+                // Campo de contraseña
                 TextField(
                   controller: _passwordController,
                   obscureText: true,
@@ -62,30 +74,70 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                if (authController.errorMessage.isNotEmpty)
-                  Text(
-                    authController.errorMessage,
-                    style: const TextStyle(color: Colors.red),
-                  ),
                 const SizedBox(height: 10),
+
+                // Recordar inicio de sesión y recuperar contraseña
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/sendEmail'); // Redirige a la ruta '/sendEmail'
+                      },
+                      child: const Text(
+                        '¿Olvidó su contraseña?',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+
+                // Botón de iniciar sesión
                 CustomButton(
                   text: 'INICIAR SESIÓN',
                   onPressed: authController.isLoading
                       ? null
                       : () async {
-                    await authController.login(
-                      _emailController.text.trim(),
-                      _passwordController.text.trim(),
-                    );
-                    if (authController.isUserAuthenticated) {
-                      Navigator.pushReplacementNamed(
-                          context, '/userDashboard');
+                    final email = _emailController.text.trim();
+                    final password = _passwordController.text.trim();
+
+                    if (email.isEmpty || password.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Por favor ingresa correo y contraseña.'),
+                        ),
+                      );
+                      return;
+                    }
+
+                    final isValid = await authController.verify(email, password);
+                    if (isValid) {
+                      await authController.login(email, password);
+
+                      if (authController.isUserAuthenticated) {
+                        Navigator.pushReplacementNamed(context, '/userDashboard');
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text(authController.errorMessage)),
+                        );
+                      }
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Credenciales inválidas.'),
+                        ),
+                      );
                     }
                   },
                   isLoading: authController.isLoading,
                 ),
                 const SizedBox(height: 20),
+
+                // Separador con "o iniciar con"
                 Row(
                   children: [
                     const Expanded(
@@ -113,6 +165,8 @@ class LoginScreen extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
+
+                // Botones de redes sociales
                 SocialMediaButton(
                   text: "Continuar con Google",
                   iconPath: "assets/images/common/google-logo.png",
@@ -133,9 +187,11 @@ class LoginScreen extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 20),
+
+                // Registro
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/register');
+                    Navigator.pushNamed(context, '/register'); // Redirige a la ruta '/register'
                   },
                   child: Text.rich(
                     TextSpan(
