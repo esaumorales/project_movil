@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ustay_project/core/utils/navigation_utils.dart';
-import 'package:ustay_project/core/widgets/custom_footer.dart';
-import 'package:ustay_project/data/partner_service.dart';
-import 'package:ustay_project/data/user_service.dart';
-import 'package:ustay_project/domain/entities/user.dart';
+import 'package:ustay_project/domain/models/user.dart';
+import 'package:ustay_project/services/partner_service.dart';
 import 'package:ustay_project/presentation/user/screens/user_dashboard_screen.dart';
 import 'package:ustay_project/presentation/user/screens/user_favorite_screen.dart';
-import 'package:ustay_project/domain/entities/partner.dart';
+import 'package:ustay_project/domain/models/partner.dart';
+import 'package:ustay_project/services/user_service.dart';
+import 'package:ustay_project/shared/widgets/custom_footer.dart';
 
 class UserPersonScreen extends StatefulWidget {
   @override

@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:ustay_project/app/routes.dart';
+import 'package:provider/provider.dart';
+import 'package:ustay_project/core/constants/routes.dart';
+import 'package:ustay_project/features/authentication/controller/auth_controller.dart';
+import 'package:ustay_project/presentation/common/splash_Screen.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthController()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -10,49 +20,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'MyApp',
-      home: SplashScreen(), // Pantalla de inicio o splash
+      home: SplashScreen(),
       onGenerateRoute: AppRoutes.generateRoute,
       debugShowCheckedModeBanner: false,
-    );
-  }
-}
-
-class SplashScreen extends StatefulWidget {
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _checkAuthentication(); // Verifica autenticación al iniciar
-  }
-
-  Future<void> _checkAuthentication() async {
-    await Future.delayed(
-        Duration(seconds: 2)); // Simula un retardo de 2 segundos
-
-    bool isAuthenticated = await _isUserAuthenticated();
-    if (isAuthenticated) {
-      Navigator.pushReplacementNamed(context, AppRoutes.userDashboard);
-    } else {
-      Navigator.pushReplacementNamed(context, AppRoutes.nonUserDashboard);
-    }
-  }
-
-  Future<bool> _isUserAuthenticated() async {
-    return false; // Cambia esto según la autenticación
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 1, 11, 26),
-      body: Center(
-        child: Image.asset('assets/images/common/splash_screen_logo.png',
-            width: 210, height: 168), // Logo de splash
-      ),
     );
   }
 }

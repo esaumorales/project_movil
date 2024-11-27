@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ustay_project/core/utils/navigation_utils.dart';
-import 'package:ustay_project/core/widgets/custom_footer.dart';
-import 'package:ustay_project/core/widgets/custom_header.dart';
+import 'package:ustay_project/shared/card/room_carousel_cards.dart';
+import 'package:ustay_project/shared/widgets/custom_header.dart';
+import 'package:ustay_project/shared/widgets/custom_footer.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_favorite_screen.dart';
 import 'package:ustay_project/presentation/non_user/screens/non_user_person_screen.dart';
-import 'package:ustay_project/presentation/widgets/room_carousel_cards.dart';
-import 'package:ustay_project/presentation/widgets/small_card.dart';
+import 'package:ustay_project/shared/card/small_card.dart';
 
 class NonUserDashboardScreen extends StatefulWidget {
   @override

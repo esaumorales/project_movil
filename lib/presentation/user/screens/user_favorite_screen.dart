@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ustay_project/core/utils/navigation_utils.dart';
-import 'package:ustay_project/core/widgets/custom_footer.dart';
+import 'package:ustay_project/shared/widgets/custom_footer.dart';
 import 'package:ustay_project/presentation/user/screens/user_dashboard_screen.dart';
 import 'package:ustay_project/presentation/user/screens/user_person_screen.dart';
-import 'package:ustay_project/presentation/widgets/large_card.dart';
-import 'package:ustay_project/presentation/widgets/filter_dialog.dart';
+import 'package:ustay_project/shared/card/large_card.dart';
+import 'package:ustay_project/shared/filter/filter_dialog.dart';
 
 class UserFavoriteScreen extends StatefulWidget {
   @override
