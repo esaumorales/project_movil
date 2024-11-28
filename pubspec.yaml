@@ -66,6 +66,7 @@ flutter:
     - assets/icons/icon-session.png
     - assets/icons/icon-password.png
     - assets/icons/icon-email.png
+    - assets/icons/icon-whatsapp.png
 
 
   uses-material-design: true

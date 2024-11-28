@@ -5,8 +5,8 @@
 import 'dart:convert';
 
 import 'package:ustay_project/domain/models/inmueble.dart';
-import 'package:ustay_project/domain/models/zona.dart';
 import 'package:ustay_project/domain/models/partner.dart';
+import 'package:ustay_project/domain/models/zona.dart';
 
 Edificio edificioFromJson(String str) => Edificio.fromJson(json.decode(str));
 
@@ -62,4 +62,6 @@ class Edificio {
     "inmuebles": List<dynamic>.from(inmuebles.map((x) => x.toJson())),
     "zona": zona.toJson(),
   };
+
 }
+

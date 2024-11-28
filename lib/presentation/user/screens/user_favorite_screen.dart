@@ -1,10 +1,63 @@
 import 'package:flutter/material.dart';
-import 'package:ustay_project/core/utils/navigation_utils.dart';
+import 'package:ustay_project/presentation/user/screens/all/detail_card_screen.dart';
 import 'package:ustay_project/shared/widgets/custom_footer.dart';
 import 'package:ustay_project/presentation/user/screens/user_dashboard_screen.dart';
 import 'package:ustay_project/presentation/user/screens/user_person_screen.dart';
 import 'package:ustay_project/shared/card/large_card.dart';
 import 'package:ustay_project/shared/filter/filter_dialog.dart';
+
+// Datos estáticos para simular los edificios y sus inmuebles
+class Inmueble {
+  final String descripcion;
+  final int precio;
+  final bool disponibilidad;
+  final bool ilove;
+  final List<String> imagenes;
+  final String ubicacion;
+  final String tiempo;
+  final double rating;
+  final String nombrePartner;
+  final String whatsapp;
+  final String fotoPartner;
+  final String descripcionCuarto;
+  final List<String> especificaciones;
+  final List<String> servicios;
+  final List<String> reglasCasa;
+  final String contacto;
+  final String correo;
+
+  Inmueble({
+    required this.descripcion,
+    required this.precio,
+    required this.disponibilidad,
+    required this.ilove,
+    required this.imagenes,
+    required this.ubicacion,
+    required this.tiempo,
+    required this.rating,
+    required this.nombrePartner,
+    required this.whatsapp,
+    required this.fotoPartner,
+    required this.descripcionCuarto,
+    required this.especificaciones,
+    required this.servicios,
+    required this.reglasCasa,
+    required this.contacto,
+    required this.correo,
+  });
+}
+
+class Edificio {
+  final String imagen;
+  final String nombre;
+  final List<Inmueble> inmuebles;
+
+  Edificio({
+    required this.imagen,
+    required this.nombre,
+    required this.inmuebles,
+  });
+}
 
 class UserFavoriteScreen extends StatefulWidget {
   @override
@@ -14,36 +67,69 @@ class UserFavoriteScreen extends StatefulWidget {
 class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
   int _currentIndex = 1;
 
-  // Lista de inmuebles favoritos (con datos ficticios realistas)
-  final List<Map<String, dynamic>> favoriteInmuebles = [
-    {
-      "imageUrl": "https://example.com/room_14.jpg",
-      "partnerName": "Residencial Sunset",
-      "price": "250",
-      "type": "Suite Premium",
-      "isAvailable": true,
-      "rating": 4.9,
-      "isFavorite": true,
-    },
-    {
-      "imageUrl": "https://example.com/room_15.jpg",
-      "partnerName": "Hotel Primavera",
-      "price": "180",
-      "type": "Habitación Estándar",
-      "isAvailable": false,
-      "rating": 4.6,
-      "isFavorite": true,
-    },
-    {
-      "imageUrl": "https://example.com/room_16.jpg",
-      "partnerName": "Hostal La Paz",
-      "price": "120",
-      "type": "Habitación Económica",
-      "isAvailable": true,
-      "rating": 4.3,
-      "isFavorite": true,
-    },
+  // Datos estáticos de ejemplo
+  final List<Edificio> _edificios = [
+    Edificio(
+      imagen: 'https://media.istockphoto.com/id/1446452511/es/foto/dise%C3%B1o-interior-minimalista-sobre-fondo-de-pared-de-arco-concepto-de-maqueta-de-pared.webp?b=1&s=612x612&w=0&k=20&c=EFs6dYSvKMgw-Mlx030hJXr0j8AnPGjf5CKMo3QcsCo=',
+      nombre: 'Edificio 1',
+      inmuebles: [
+        Inmueble(
+          descripcion: 'Cerca a Alameda',
+          precio: 1000,
+          disponibilidad: true,
+          ilove: true,
+          imagenes: [
+            'https://media.istockphoto.com/id/1408203038/es/foto/maqueta-de-la-casa-fondo-interior-del-dormitorio-con-muebles-de-rat%C3%A1n-y-pared-en-blanco-estilo.webp?b=1&s=612x612&w=0&k=20&c=w0Zt6aQZS8vLJ1ujfHuDXhKfW0xvAKEyhAOnS2yVKJc=',
+            'https://media.istockphoto.com/id/1390233984/es/foto/habitaci%C3%B3n-de-lujo-moderna.webp?b=1&s=612x612&w=0&k=20&c=2hb95N2gSNdPf55-rHOAFA5yEfzTV3UZxXYWONCU0sg=',
+            'https://media.istockphoto.com/id/1535511484/es/foto/mueble-de-tv-en-una-sala-de-estar-de-decoraci%C3%B3n-escandinava.webp?b=1&s=612x612&w=0&k=20&c=ipnzQeJBtceTsM0vUYF5AR2ueMavaV_YB6fFklocJoU=',
+          ],
+          ubicacion: 'Ubicación A',
+          tiempo: 'Mensual',
+          rating: 4.5,
+          nombrePartner: 'Jose M',
+          whatsapp: 'assets/icons/icon-whatsapp.png',
+          fotoPartner: 'https://via.placeholder.com/50',
+          descripcionCuarto: 'Apartamento A con vista panorámica.',
+          especificaciones: ['1 persona', '1 baño', '50 m²'],
+          servicios: ['WiFi', 'Cocineta', 'Aire acondicionado'],
+          reglasCasa: ['No fumar', 'No mascotas'],
+          contacto: '123456789',
+          correo: 'contacto@ejemplo.com',
+        ),
+        Inmueble(
+          descripcion: 'Shalom',
+          precio: 1200,
+          disponibilidad: false,
+          ilove: true,
+          imagenes: ['https://media.istockphoto.com/id/1442113721/es/foto/sof%C3%A1-de-tela-blanca-planta-de-higo-de-hoja-de-viol%C3%ADn-escritorio-de-trabajo-de-madera-y-silla.webp?b=1&s=612x612&w=0&k=20&c=M5TG3BEMVFWoO55orV8VDkofHoyMd1mkP5X8xS5snbI=',
+            'https://media.istockphoto.com/id/1467126728/es/foto/dise%C3%B1o-interior-de-dormitorio-moderno-escandinavo-y-japon%C3%A9sdi-con-cama-color-blanco-mesa-y.webp?b=1&s=612x612&w=0&k=20&c=RDWKgzj93juUZqDRLsDG4kTcWYfrdKQHFW2wpIaCCCc='],
+          ubicacion: 'Ubicación B',
+          tiempo: 'Mensual',
+          rating: 4.8,
+          nombrePartner: 'Juan Cruz',
+          whatsapp: 'assets/icons/icon-whatsapp.png',
+          fotoPartner: 'https://via.placeholder.com/50',
+          descripcionCuarto: 'Apartamento B con vista a la ciudad.',
+          especificaciones: ['2 personas', '1 baño', '60 m²'],
+          servicios: ['WiFi', 'Cocineta', 'Aire acondicionado', 'Lavadora'],
+          reglasCasa: ['No fumar', 'No fiestas'],
+          contacto: '987654321',
+          correo: 'contacto2@ejemplo.com',
+        ),
+      ],
+    ),
   ];
+
+  List<Inmueble> get favoritos {
+    return _edificios
+        .expand((edificio) => edificio.inmuebles.where((inmueble) => inmueble.ilove))
+        .toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   void _onIconTap(int index) {
     setState(() {
@@ -52,19 +138,21 @@ class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
 
     switch (index) {
       case 0:
-        navigateWithoutAnimation(context, UserDashboardScreen());
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => UserDashboardScreen()));
         break;
       case 1:
-        navigateWithoutAnimation(context, UserFavoriteScreen());
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => UserFavoriteScreen()));
         break;
       case 2:
-        navigateWithoutAnimation(context, UserPersonScreen());
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => UserPersonScreen()));
         break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final favoritos = this.favoritos;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -106,33 +194,40 @@ class _UserFavoriteScreenState extends State<UserFavoriteScreen> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: favoritos.isEmpty
+          ? Center(child: CircularProgressIndicator()) // Mientras cargan los favoritos
+          : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
-            children: favoriteInmuebles.map((inmueble) {
+            children: favoritos.map((inmueble) {
               return Column(
                 children: [
                   Stack(
                     children: [
                       LargeCard(
-                        imageUrl: inmueble["imageUrl"] ?? "",
-                        partnerName: inmueble["partnerName"] ?? "Sin información",
-                        price: inmueble["price"] ?? "0.00",
-                        type: inmueble["type"] ?? "Sin descripción",
-                        isAvailable: inmueble["isAvailable"] ?? false,
-                        rating: inmueble["rating"] ?? 0.0,
+                        imageUrl: inmueble.imagenes[0], // Usar la imagen del inmueble
+                        partnerName: inmueble.nombrePartner,
+                        price: inmueble.precio.toString(),
+                        type: inmueble.descripcion,
+                        isAvailable: inmueble.disponibilidad,
+                        rating: inmueble.rating,
                         onTap: () {
-                          debugPrint("Inmueble seleccionado: ${inmueble["type"]}");
+                          // Validar que los parámetros no sean null antes de navegar
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => DetailRoomScreen(inmueble: inmueble),
+                            ),
+                          );
                         },
                       ),
-                      // Ícono de corazón rojo en la esquina superior derecha
                       Positioned(
                         top: 8,
                         right: 8,
                         child: Icon(
                           Icons.favorite,
-                          color: inmueble["isFavorite"] ? Colors.red : Colors.grey,
+                          color: inmueble.ilove ? Colors.red : Colors.grey,
                           size: 24,
                         ),
                       ),
