@@ -151,6 +151,12 @@ class DetailRoomScreen extends StatelessWidget {
               // Título de Especificaciones con fondo naranja
               Container(
                 padding: EdgeInsets.all(8),
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 1.0,
+                // 80% del ancho disponible
+                height: 40,
                 decoration: BoxDecoration(
                   color: Color(0xFFF8AA02),
                   borderRadius: BorderRadius.circular(8),
@@ -160,19 +166,20 @@ class DetailRoomScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Colors.black,
                   ),
                 ),
               ),
               const SizedBox(height: 8),
               // Especificaciones
-              ...inmueble.especificaciones.map((spec) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Text(
-                  '- $spec',
-                  style: TextStyle(fontSize: 14, color: Colors.black),
-                ),
-              )).toList(),
+              ...inmueble.especificaciones.map((spec) =>
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(
+                      '- $spec',
+                      style: TextStyle(fontSize: 14, color: Colors.black),
+                    ),
+                  )).toList(),
               const SizedBox(height: 16),
 
               // Servicios
@@ -199,14 +206,16 @@ class DetailRoomScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             inmueble.servicios[i],
-                            style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+                            style: TextStyle(fontSize: 14,
+                                color: Colors.grey[700]),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             'Disponible',
-                            style: TextStyle(fontSize: 14, color: Colors.black38),
+                            style: TextStyle(fontSize: 14,
+                                color: Colors.black38),
                           ),
                         ),
                       ],
@@ -218,13 +227,16 @@ class DetailRoomScreen extends StatelessWidget {
               // Reglas de la casa
               _buildSectionTitle('Reglas de la casa:'),
               const SizedBox(height: 8),
-              ...inmueble.reglasCasa.map((rule) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                child: Text(
-                  '* $rule',
-                  style: TextStyle(fontSize: 14, color: Colors.black),
-                ),
-              )).toList(),
+              ...inmueble.reglasCasa.map((rule) =>
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+
+                    child: Text(
+
+                      '• $rule',
+                      style: TextStyle(fontSize: 14, color: Colors.black),
+                    ),
+                  )).toList(),
               const SizedBox(height: 16),
 
               // Contacto y Correo con borde
@@ -236,18 +248,21 @@ class DetailRoomScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.orange),
                         borderRadius: BorderRadius.circular(8),
-                        color: Colors.orange,
+                        color: Color(0xFFF8AA02),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Contacto:',
-                            style: TextStyle(fontSize: 14, color: Colors.black87),
+                            'Contacto',
+                            style: TextStyle(fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87),
                           ),
                           Text(
                             '${inmueble.contacto}',
-                            style: TextStyle(fontSize: 14, color: Colors.black87),
+                            style: TextStyle(
+                                fontSize: 14, color: Colors.black87),
                           ),
                         ],
                       ),
@@ -260,18 +275,21 @@ class DetailRoomScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                         border: Border.all(color: Colors.orange),
                         borderRadius: BorderRadius.circular(8),
-                        color: Colors.orange,
+                        color: Color(0xFFF8AA02),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Correo:',
-                            style: TextStyle(fontSize: 14, color: Colors.black87),
+                            'Correo',
+                            style: TextStyle(fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87),
                           ),
                           Text(
                             '${inmueble.correo}',
-                            style: TextStyle(fontSize: 14, color: Colors.black87),
+                            style: TextStyle(fontSize: 14,
+                                color: Colors.black87),
                           ),
                         ],
                       ),
@@ -289,20 +307,27 @@ class DetailRoomScreen extends StatelessWidget {
 
   // Método para construir los títulos de secciones con fondo naranja
   Widget _buildSectionTitle(String title) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Color(0xFFF8AA02),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return Container(
+          padding: EdgeInsets.all(8),
+          height: 40,
+          width: constraints.maxWidth * 1.0,
+          // 90% del ancho disponible
+          decoration: BoxDecoration(
+            color: Color(0xFFF8AA02),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Text(
+            title,
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+        );
+      },
     );
   }
 }

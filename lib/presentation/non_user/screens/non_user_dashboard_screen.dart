@@ -18,20 +18,38 @@ class _NonUserDashboardScreenState extends State<NonUserDashboardScreen> {
 
   final List<Map<String, dynamic>> staticRooms = [
     {
-      "title": "Habitación Deluxe",
+      "title": "Cerca a alameda",
       "price": "S/250",
-      "partnerName": "Juan Perez",
+      "partnerName": "Andres Perez",
       "description": "Cerca al centro",
-      "imageUrl": "assets/images/common/cards/card11.jpg",
+      "imageUrl": "https://http2.mlstatic.com/D_NQ_NP_2X_791141-MPE79945196099_102024-N.webp",
       "rating": 4.8,
       "services": [Icons.local_laundry_service, Icons.tv, Icons.wifi],
     },
     {
-      "title": "Habitación Económica",
+      "title": "Cerca al parque",
       "price": "S/150",
       "partnerName": "Juan P.",
-      "description": "Zona tranquila",
-      "imageUrl": "https://example.com/room_2.jpg",
+      "description": "5 min de la universidad",
+      "imageUrl": "https://i0.wp.com/myhogar.pe/wp-content/uploads/2023/11/1-3.png?resize=1170%2C785&ssl=1",
+      "rating": 4.9,
+      "services": [Icons.home, Icons.kitchen, Icons.pool],
+    },
+    {
+      "title": "Shalom",
+      "price": "S/150",
+      "partnerName": "Moises P.",
+      "description": "Zona A",
+      "imageUrl": "https://cdn2.infocasas.com.uy/repo/img/9bea0dd4ff832d1b2a5d8b09e3269c974ddfa5ed.jpg",
+      "rating": 4.8,
+      "services": [Icons.home, Icons.kitchen, Icons.pool],
+    },
+    {
+      "title": "Habitación Económica",
+      "price": "S/250",
+      "partnerName": "Jesus P.",
+      "description": "Sin gatos",
+      "imageUrl": "https://http2.mlstatic.com/D_NQ_NP_2X_809754-MPE76838007979_062024-N.webp",
       "rating": 4.5,
       "services": [Icons.home, Icons.kitchen, Icons.pool],
     },
@@ -39,16 +57,16 @@ class _NonUserDashboardScreenState extends State<NonUserDashboardScreen> {
 
   final List<Map<String, dynamic>> staticSmallRooms = [
     {
-      "title": "Cuarto A",
-      "price": "S/200",
-      "partnerName": "Partner 1",
-      "imageUrl": "https://example.com/room_3.jpg",
+      "title": "Costado de Roma",
+      "price": "S/230",
+      "partnerName": "Luis Perez",
+      "imageUrl": "https://img-us-1.trovit.com/img1pe/1A1YSXCVs1c/1A1YSXCVs1c.6_11.jpg",
     },
     {
       "title": "Cuarto B",
       "price": "S/300",
       "partnerName": "Partner 2",
-      "imageUrl": "https://example.com/room_4.jpg",
+      "imageUrl": "https://img-us-1.trovit.com/img1pe/1A1YSXCVs1c/1A1YSXCVs1c.11_11.jpg",
     },
   ];
 

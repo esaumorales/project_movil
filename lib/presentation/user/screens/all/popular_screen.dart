@@ -11,15 +11,15 @@ class _PopularScreenState extends State<PopularScreen> {
   // Datos realistas para las tarjetas de populares
   final List<Map<String, dynamic>> popularInmuebles = [
     {
-      "imageUrl": "https://example.com/room_1.jpg",
-      "partnerName": "Hotel Central",
+      "imageUrl": "https://img-us-1.trovit.com/img1pe/6W1p1uZ4_H/6W1p1uZ4_H.6_11.jpg",
+      "partnerName": "Cuarto Central",
       "price": "300",
       "type": "Suite Deluxe",
       "isAvailable": true,
       "rating": 4.9,
     },
     {
-      "imageUrl": "https://example.com/room_2.jpg",
+      "imageUrl": "https://img-us-1.trovit.com/img1pe/i1W51IGJ3R/i1W51IGJ3R.5_11.jpg",
       "partnerName": "Residencial Primavera",
       "price": "250",
       "type": "Habitación Doble",
@@ -27,16 +27,16 @@ class _PopularScreenState extends State<PopularScreen> {
       "rating": 4.8,
     },
     {
-      "imageUrl": "https://example.com/room_3.jpg",
-      "partnerName": "Hostal El Sol",
+      "imageUrl": "https://img-us-1.trovit.com/img1pe/1Ux1s111UJC1X/1Ux1s111UJC1X.1_11.jpg",
+      "partnerName": "Cuarto El Sol",
       "price": "200",
       "type": "Habitación Simple",
       "isAvailable": false,
       "rating": 4.7,
     },
     {
-      "imageUrl": "https://example.com/room_4.jpg",
-      "partnerName": "Hotel Urbano",
+      "imageUrl": "https://img-us-1.trovit.com/img1pe/161C1x191H1PK14/161C1x191H1PK14.12_11.jpg",
+      "partnerName": "Departamento Urbano",
       "price": "350",
       "type": "Suite Presidencial",
       "isAvailable": true,

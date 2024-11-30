@@ -44,7 +44,7 @@ class _RoomCarouselWithCardsState extends State<RoomCarouselWithCards> {
               height: 8,
               width: _currentIndex == index ? 16 : 8,
               decoration: BoxDecoration(
-                color: _currentIndex == index ? Colors.blue : Colors.grey,
+                color: _currentIndex == index ? Colors.orange : Colors.grey,
                 borderRadius: BorderRadius.circular(4),
               ),
             ),
@@ -117,7 +117,7 @@ class _RoomCarouselWithCardsState extends State<RoomCarouselWithCards> {
                         child: Icon(
                           room["services"][index],
                           size: 18,
-                          color: Colors.blue,
+                          color: Colors.orangeAccent,
                         ),
                       ),
                     ),

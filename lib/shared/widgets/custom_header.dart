@@ -61,9 +61,14 @@ class CustomHeader extends StatelessWidget implements PreferredSizeWidget {
                          width: 24,
                          height: 24,
                        ),
-                       onPressed: onGridTap,
+                       // onPressed: onGridTap,
+                       onPressed: () {
+                         Navigator.pushNamed(context, '/userDashboard');
+                       },
                        padding: EdgeInsets.zero,
+
                      ),
+
                    ],
                  ),
                  SizedBox(height: 8), // Espacio entre filas

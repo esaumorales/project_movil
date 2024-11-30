@@ -11,7 +11,7 @@ class _InmuebleScreenState extends State<InmuebleScreen> {
   // Datos estáticos para las LargeCards
   final List<Map<String, dynamic>> inmuebles = [
     {
-      "imageUrl": "https://example.com/room_1.jpg",
+      "imageUrl": "https://mitiempo.pe/ws/image.php?img=http%3A%2F%2Fwww.mitiempo.pe%2Fimages_users%2F1206564_1715972499.jpg",
       "partnerName": "Partner 1",
       "price": "250",
       "type": "Habitación Deluxe",
@@ -19,7 +19,7 @@ class _InmuebleScreenState extends State<InmuebleScreen> {
       "rating": 4.8,
     },
     {
-      "imageUrl": "https://example.com/room_2.jpg",
+      "imageUrl": "https://img-us-1.trovit.com/img1pe/fm1Vecjn8/fm1Vecjn8.13_11.jpg",
       "partnerName": "Partner 2",
       "price": "150",
       "type": "Habitación Económica",
@@ -27,7 +27,7 @@ class _InmuebleScreenState extends State<InmuebleScreen> {
       "rating": 4.5,
     },
     {
-      "imageUrl": "https://example.com/room_3.jpg",
+      "imageUrl": "https://img-us-1.trovit.com/img1pe/1Rxr16161-1e13/1Rxr16161-1e13.1_11.jpg",
       "partnerName": "Partner 3",
       "price": "180",
       "type": "Habitación Popular",
